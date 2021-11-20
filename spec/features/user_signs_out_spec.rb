@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "Sign Out" do
+feature "User signs out" do
   let!(:test_user) { FactoryBot.create(:user) }
 
-  scenario "User signs out" do
+  scenario "and is able to sign out" do
     login_as(test_user)
     visit '/'  
     click_link "Sign Out"
