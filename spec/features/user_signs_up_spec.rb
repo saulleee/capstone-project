@@ -3,7 +3,7 @@ require "rails_helper"
 feature "User signs up" do
   let!(:test_user) { FactoryBot.create(:user) }
 
-  scenario "and is able to go to the sign up page" do
+  scenario "and is able to visit the sign up page" do
     visit '/'
     click_link "Sign In"
     click_link "Sign up"
