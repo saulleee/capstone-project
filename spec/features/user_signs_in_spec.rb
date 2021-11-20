@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "Sign In" do
+feature "User signs in" do
   let!(:test_user) { FactoryBot.create(:user) }
 
-  scenario "User signs in" do
+  scenario "and is able to signi in" do
     visit '/'
     click_on "Sign In"
     fill_in "Email", with: test_user.email
@@ -13,7 +13,7 @@ feature "Sign In" do
     expect(page).to have_content("Signed in successfully.")
   end
 
-  scenario "User is unable to sign in with incorrect info" do
+  scenario "and is unable to sign in with incorrect info" do
     visit '/'
     click_link "Sign In"
     click_button "Sign In"

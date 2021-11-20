@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "Sign Up" do
+feature "User signs up" do
   let!(:test_user) { FactoryBot.create(:user) }
 
-  scenario "User is able to go to the sign up page" do
+  scenario "and is able to go to the sign up page" do
     visit '/'
     click_link "Sign In"
     click_link "Sign up"
@@ -11,7 +11,7 @@ feature "Sign Up" do
     expect(page).to have_content("Sign Up")
   end
 
-  scenario "User is able to sign up" do
+  scenario "and is able to sign up" do
     visit new_user_registration_path
     fill_in "Username", with: "test_user"
     fill_in "Email", with: "email@email.com"
@@ -23,7 +23,7 @@ feature "Sign Up" do
     expect(page).to have_content("Welcome! You have signed up successfully.")
   end
   
-  scenario "User is unable to sign with incomplete form fields" do
+  scenario "and is unable to sign with incomplete form fields" do
     visit new_user_registration_path
     click_button "Sign Up"
 
@@ -32,7 +32,7 @@ feature "Sign Up" do
     expect(page).to have_content("Password can't be blank")
   end
 
-  scenario "User is unable to sign up with a pre-existing email and username" do
+  scenario "and is unable to sign up with a pre-existing email and username" do
     visit new_user_registration_path
     fill_in "Email", with: test_user.email
     fill_in "Username", with: test_user.username
