@@ -3,7 +3,7 @@ require "rails_helper"
 feature "User signs in" do
   let!(:test_user) { FactoryBot.create(:user) }
 
-  scenario "and is able to signi in" do
+  scenario "and is able to sign in" do
     visit '/'
     click_on "Sign In"
     fill_in "Email", with: test_user.email
