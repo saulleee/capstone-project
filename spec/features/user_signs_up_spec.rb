@@ -44,4 +44,18 @@ feature "User signs up" do
     expect(page).to have_content("Email has already been taken")
     expect(page).to have_content("Username has already been taken")
   end
+
+  scenario "and is able to submit a profile picture" do
+    visit new_user_registration_path
+    
+    fill_in "Username", with: "test_user"
+    fill_in "Email", with: "email@email.com"
+    fill_in "Password", with: "password"
+    fill_in "Password confirmation", with: "password"
+    attach_file :user_profile_photo, "#{Rails.root}/spec/support/images/default_photo.jpeg"
+
+    click_button "Sign Up"
+
+    expect(page).to have_content("Welcome! You have signed up successfully.")
+  end
 end
