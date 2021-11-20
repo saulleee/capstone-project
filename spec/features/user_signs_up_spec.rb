@@ -5,7 +5,8 @@ feature "Sign Up" do
 
   scenario "User is able to go to the sign up page" do
     visit '/'
-    click_link "Sign Up"
+    click_link "Sign In"
+    click_link "Sign up"
 
     expect(page).to have_content("Sign Up")
   end
