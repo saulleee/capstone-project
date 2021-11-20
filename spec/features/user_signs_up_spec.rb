@@ -20,7 +20,7 @@ feature "User signs up" do
 
     click_button "Sign Up"
 
-    expect(page).to have_content("Welcome! You have signed up successfully.")
+    expect(page).to have_content("You have signed up successfully.")
   end
   
   scenario "and is unable to sign with incomplete form fields" do
@@ -56,6 +56,6 @@ feature "User signs up" do
 
     click_button "Sign Up"
 
-    expect(page).to have_content("Welcome! You have signed up successfully.")
+    expect(page).to have_content("You have signed up successfully.")
   end
 end
