@@ -9,6 +9,7 @@ CarrierWave.configure do |config|
 
     if Rails.env.production?
       config.cache_dir = "#{Rails.root}/tmp/uploads"
+      config.aws_acl = 'public-read'
       config.fog_directory  = ENV["S3_BUCKET_PRODUCTION"]
     else
       config.fog_directory  = ENV["S3_BUCKET_DEVELOPMENT"]
