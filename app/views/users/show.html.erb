@@ -1,0 +1,6 @@
+<% require "pry" %>
+<%# binding.pry %>
+<div><%= image_tag("#{@user.profile_photo.default}") %></div>
+<div><%= @user.email %></div>
+<div><%= @user.username %></div>
+<div><%= link_to "Edit Account Information", edit_user_registration_path %></div>
