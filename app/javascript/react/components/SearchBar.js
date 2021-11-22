@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const SearchBar = (props) => {
   const [searchString, setSearchString] = useState('');
@@ -15,7 +15,7 @@ const SearchBar = (props) => {
       location: searchString
     });
     try {
-      const response = await fetch("/api/v1/yelps/search", {
+      const response = await fetch("/api/v1/yelp/search", {
         method: "POST",
         body: body,
         headers: {
@@ -34,12 +34,6 @@ const SearchBar = (props) => {
     }
   }
 
-  const trips = results.map((trip) => {
-    return(
-      <li>{trip.name} ------------- {trip.location.display_address[0]} {trip.location.display_address[1]}</li>
-    )
-  });
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -48,7 +42,6 @@ const SearchBar = (props) => {
 
         <input type='submit' value='Submit' />
       </form>
-      <ul>{trips}</ul>
     </div>
   );
 }

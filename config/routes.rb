@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post "yelps/search", to: "yelps#search"
+      post "yelp/search", to: "yelp#search"
     end
   end
 end
