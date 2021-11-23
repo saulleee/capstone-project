@@ -1,22 +1,8 @@
 class Api::V1::YelpController < ApplicationController
-  API_KEY = ENV["YELP_KEY"]
-  API_HOST = "https://api.yelp.com"
-  SEARCH_PATH = "/v3/businesses/search"
+  protect_from_forgery unless: -> { request.format.json? }
 
   def search
-    term = "food"
-    location = params[:location]
-    limit = 5
-
-    url = "#{API_HOST}#{SEARCH_PATH}"
-    
-    params = {
-      term: term,
-      location: location,
-      limit: limit
-    }
-  
-    response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
-    render json: JSON.parse(response.body)
+    response = YelpSearch.retrieve_results(params[:location])
+    render json: response.trips
   end
 end
