@@ -28,12 +28,14 @@ const SearchBar = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      setResults(responseBody.businesses);
+      console.log(responseBody);
+      setResults(responseBody);
     } catch (error) {
       console.error(`Error in Fetch: ${error.message}`);
     }
   }
 
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
