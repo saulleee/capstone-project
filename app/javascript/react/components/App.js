@@ -1,17 +1,18 @@
-import React from 'react'
-import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom"
-import SearchBar from "./SearchBar"
+import React from "react";
+import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
+import TripsIndexContainer from "./TripsIndexContainer";
 
 const App = (props) => {
   return (
   <div>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={SearchBar} />
+        <Route exact path="/" component={TripsIndexContainer} />
+        <Route exact path="/trips/:id" component={TripsIndexContainer} />
       </Switch>
     </BrowserRouter>
   </div>
-  )
+  );
 }
 
-export default App
+export default App;
