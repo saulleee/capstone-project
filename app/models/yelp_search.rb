@@ -10,24 +10,61 @@ class YelpSearch
     @trips = trips
   end
 
-  def self.retrieve_results(location)
-    yelp_response = yelp_request("cafe", location)
-    parsed_response = parse_request(yelp_response)
-    YelpSearch.new(parsed_response)
-  end
+  def self.retrieve_results(*terms, location)
+    places_array = []
 
-  def self.yelp_request(term, location)    
+    # the first set of search results
+    response = yelp_request(terms[0], location)
+    parsed_response = parse_request(response)
+    places_array << parsed_response
+    
+    if terms.length > 1
+      # the following set of search results, based off of the first set's coordinates
+      sub_terms = terms.drop(1)
+      sub_terms.each_with_index do |term, index|
+        location = parsed_response[index]["location"]["display_address"].join(" ")
+        radius = 500
+        sort_by = "distance"
+
+        sub_response = yelp_request(term, location, radius)
+        sub_parsed_response = parse_request(sub_response)
+        places_array << sub_parsed_response
+      end
+    end
+    
+    trips = zip(places_array)
+    YelpSearch.new(trips)
+  end
+  
+  def self.yelp_request(term, location, radius = nil, sort_by = "review_count")    
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
       term: term,
       location: location,
+      radius: radius,
+      sort_by: sort_by,
       limit: LIMIT
     }
     response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
   end
 
   def self.parse_request(response)
-    businesses = JSON.parse(response.body)
-    return businesses["businesses"]
+    parsed_response = JSON.parse(response.body)
+    return parsed_response["businesses"]
+  end
+
+  def self.zip(places_array)
+    trips = []
+
+    if places_array.length > 1
+      sub_arrays = places_array.drop(1)
+      trips = places_array[0].zip(*sub_arrays)
+    else
+      places_array[0].each do |place|
+        trips << [place]
+      end
+    end
+
+    trips
   end
 end

@@ -8,6 +8,7 @@ const App = (props) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={TripsIndexContainer} />
+        <Route exact path="/trips/:id" component={TripsIndexContainer} />
       </Switch>
     </BrowserRouter>
   </div>
