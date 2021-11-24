@@ -31,6 +31,7 @@ const TripsIndexContainer = (props) => {
     return (
       <TripTile
         key={`${index}_${new Date().getTime()}`}
+        id={`${index}_${new Date().getTime()}`}
         trip={trip}
       />
     );
