@@ -71,7 +71,6 @@ class YelpSearch
     end
 
     trips
-    binding.pry
   end
 
   def self.trip_id_generator(trips, temp)
