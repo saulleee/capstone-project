@@ -4,7 +4,6 @@ class YelpSearch
   API_KEY = ENV["YELP_KEY"]
   API_HOST = "https://api.yelp.com"
   SEARCH_PATH = "/v3/businesses/search"
-  LIMIT = 3
 
   attr_reader :trips
 
@@ -16,21 +15,24 @@ class YelpSearch
     places_array = []
 
     # the first set of search results
-    response = yelp_request(terms[0], location)
+    response = yelp_request(terms[0], location, limit: 10)
     parsed_response = parse_request(response)
     places_array << parsed_response
     
     if terms.length > 1
-      # the following set of search results, based off of the first set's coordinates
+      # the following set of search results, based off each of the first set's coordinates
       sub_terms = terms.drop(1)
-      sub_terms.each_with_index do |term, index|
-        location = parsed_response[index]["location"]["display_address"].join(" ")
-        radius = 500
-        sort_by = "distance"
-
-        sub_response = yelp_request(term, location, radius)
-        sub_parsed_response = parse_request(sub_response)
-        places_array << sub_parsed_response
+      sub_terms.each do |term|
+        temp = []
+        parsed_response.each do |place|
+          location = place["location"]["display_address"].join(" ")
+          radius = 500
+          sort_by = "distance"
+          
+          sub_response = yelp_request(term, location, radius: radius, sort_by: sort_by)
+          temp << parse_request(sub_response)[0]
+        end
+        places_array << temp
       end
     end
     
@@ -38,14 +40,14 @@ class YelpSearch
     YelpSearch.new(trips)
   end
   
-  def self.yelp_request(term, location, radius = nil, sort_by = "review_count")    
+  def self.yelp_request(term, location, limit: 1, radius: nil, sort_by: "best_match")    
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
       term: term,
       location: location,
+      limit: limit,
       radius: radius,
-      sort_by: sort_by,
-      limit: LIMIT
+      sort_by: sort_by
     }
     response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
   end
@@ -75,7 +77,7 @@ class YelpSearch
 
   def self.trip_id_generator(trips, temp)
     temp.each do |i|
-      trips << { id: SecureRandom.hex, trip: i}
+      trips << { id: SecureRandom.hex, trip: i }
     end
   end
 end
