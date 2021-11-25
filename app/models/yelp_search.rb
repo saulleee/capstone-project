@@ -1,3 +1,5 @@
+require "securerandom"
+
 class YelpSearch
   API_KEY = ENV["YELP_KEY"]
   API_HOST = "https://api.yelp.com"
@@ -55,16 +57,26 @@ class YelpSearch
 
   def self.zip(places_array)
     trips = []
+    temp = []
 
     if places_array.length > 1
       sub_arrays = places_array.drop(1)
-      trips = places_array[0].zip(*sub_arrays)
+      temp = places_array[0].zip(*sub_arrays)
+      trip_id_generator(trips, temp)
     else
       places_array[0].each do |place|
-        trips << [place]
+        temp << [place]
+        trip_id_generator(trips, temp)
       end
     end
 
     trips
+    binding.pry
+  end
+
+  def self.trip_id_generator(trips, temp)
+    temp.each do |i|
+      trips << { id: SecureRandom.hex, trip: i}
+    end
   end
 end
