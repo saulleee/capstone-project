@@ -9,6 +9,7 @@ const TripShow = (props) => {
 
   return (
     <div>
+      <img src={point.image_url} alt="Image from Yelp" />
       <ul>
         <li>
           Name: <a href={point.url} target="_blank">{point.name}</a>

@@ -3,15 +3,14 @@ import TripShow from "./TripShow";
 
 const TripShowContainer = (props) => {
   
-  const pointDescription = props.location.state.trip.map((point, index) => {
+  const pointDescription = props.location.state.trip.map((point) => {
     return (
       <TripShow
-        key={`${index}_${new Date().getTime()}`}
+        key={point.id}
         point={point}
       />
     );
   });
-
   return (
     pointDescription
   );

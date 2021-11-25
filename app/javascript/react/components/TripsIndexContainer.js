@@ -27,12 +27,12 @@ const TripsIndexContainer = (props) => {
     }
   }
 
-  const tripTiles = trips.map((trip, index) => {
+  const tripTiles = trips.map((trip) => {
     return (
       <TripTile
-        key={`${index}_${new Date().getTime()}`}
-        id={`${index}_${new Date().getTime()}`}
-        trip={trip}
+        key={trip.id}
+        id={trip.id}
+        trip={trip.trip}
       />
     );
   });
