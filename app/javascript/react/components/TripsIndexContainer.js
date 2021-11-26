@@ -4,8 +4,12 @@ import TripTile from "./TripTile";
 
 const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const newSearch = async (searchPayload) => {
+    setError('');
+    setLoading(true);
     const body = JSON.stringify(searchPayload);
     try {
       const response = await fetch("/api/v1/yelp/search", {
@@ -22,7 +26,10 @@ const TripsIndexContainer = (props) => {
       }
       const responseBody = await response.json();
       setTrips(responseBody);
+      setLoading(false);
     } catch (error) {
+      setError("Please search a location");
+      setLoading(false);
       console.error(`Error in Fetch: ${error.message}`);
     }
   }
@@ -40,7 +47,8 @@ const TripsIndexContainer = (props) => {
   return (
     <div>
       <TripSearchContainer newSearch={newSearch} />
-      {tripTiles}
+      <p>{error}</p>
+      { loading ? <i className="fas fa-spinner fa-spin"></i> : tripTiles }
     </div>
   );
 }
