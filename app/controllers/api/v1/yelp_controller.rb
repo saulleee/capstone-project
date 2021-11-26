@@ -2,7 +2,7 @@ class Api::V1::YelpController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def search
-    response = YelpSearch.retrieve_results("cafe", "dinner", "attraction", "bar", "dessert", params[:location])
+    response = YelpSearch.retrieve_results("cafe", "dinner", params[:location])
     render json: response.trips
   end
 end
