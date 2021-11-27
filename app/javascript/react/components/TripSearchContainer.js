@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-
-const terms = [
-  { term: "breakfast" },
-  { term: "brunch" },
-  { term: "lunch" },
-  { term: "cafe" },
-  { term: "attractions" },
-  { term: "dinner" },
-  { term: "dessert" },
-  { term: "bar" },
-  { term: "nightlife" }
-];
+import { terms } from "./utilities/terms";
+import { Checklist } from "./CheckList";
 
 const TripSearchContainer = (props) => {
   const [location, setLocation] = useState('');
@@ -35,21 +25,15 @@ const TripSearchContainer = (props) => {
     props.newSearch(submissionPost);
   }
 
-  const checkList = terms.map((term, index) => {
+  const checklist = terms.map((term, index) => {
     return (
-      <li key={index}>
-        <div>
-          <input
-            type="checkbox"
-            id={`custom-checkbox-${index}`}
-            name={term}
-            value={term}
-            checked={isChecked[index]}
-            onChange={() => handleOnChangeCheck(index)}
-          />
-          <label htmlFor={`custom-checkbox-${index}`}>{term.term}</label>
-        </div>
-      </li>
+      <Checklist 
+        key={index}
+        term={term}
+        index={index}
+        isChecked={isChecked}
+        handleOnChangeCheck={handleOnChangeCheck}
+      />
     );
   });
 
@@ -60,7 +44,7 @@ const TripSearchContainer = (props) => {
         <input type='text' name='location' placeholder="Boston" value={location} onChange={(e)=>setLocation(e.target.value)} />
 
         <div>
-          {checkList}
+          {checklist}
         </div>
         
         <input type='submit' value='Submit' />
