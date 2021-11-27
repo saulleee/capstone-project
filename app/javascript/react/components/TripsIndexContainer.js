@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import history from "./history";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
 
@@ -27,6 +28,7 @@ const TripsIndexContainer = (props) => {
       const responseBody = await response.json();
       setTrips(responseBody);
       setLoading(false);
+      history.push('/', { trips: responseBody });
     } catch (error) {
       setError("Please search a location");
       setLoading(false);
@@ -43,6 +45,8 @@ const TripsIndexContainer = (props) => {
       />
     );
   });
+
+  console.log(history);
 
   return (
     <div>

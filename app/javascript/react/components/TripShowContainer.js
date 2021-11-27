@@ -1,8 +1,8 @@
 import React from "react";
+import history from "./history";
 import TripShow from "./TripShow";
 
 const TripShowContainer = (props) => {
-  
   const pointDescription = props.location.state.trip.map((point) => {
     return (
       <TripShow
@@ -11,8 +11,14 @@ const TripShowContainer = (props) => {
       />
     );
   });
+
+  console.log(history);
+
   return (
-    pointDescription
+    <div>
+      <button onClick={history.goBack}>Back</button>
+      {pointDescription}
+    </div>
   );
 }
 
