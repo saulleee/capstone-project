@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { terms } from "./utilities/terms";
-import { Checklist } from "./CheckList";
+import { Checklist } from "./Checklist";
 
 const TripSearchContainer = (props) => {
   const [location, setLocation] = useState('');
