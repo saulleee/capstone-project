@@ -6,13 +6,13 @@ class YelpSearch
   SEARCH_PATH = "/v3/businesses/search"
 
   DEFAULT_LIMIT = 1
-  DEFAULT_SORT_BY = "review_count"
+  DEFAULT_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
   RESPONSE_LIMIT = 5
   
   SUB_RESPONSE_LIMIT = 5
   SUB_RESPONSE_RADIUS = 1000
-  SUB_RESPONSE_SORT_BY = "review_count"
+  SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
   attr_reader :trips
 
@@ -36,7 +36,7 @@ class YelpSearch
         parsed_response.each_with_index do |place, index|
           # location is set just to the FIRST POINT'S location
           location = place["location"]["display_address"].join(" ")
-          sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY)
+          sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
           
           array_of_trips = zip(places_array)
           array_of_places = parse_request(sub_response)
@@ -61,7 +61,7 @@ class YelpSearch
     YelpSearch.new(trips_with_ids)
   end
   
-  def self.yelp_request(term, location, limit: DEFAULT_LIMIT, radius: nil, sort_by: DEFAULT_SORT_BY)    
+  def self.yelp_request(term, location, limit: DEFAULT_LIMIT, radius: nil, sort_by: DEFAULT_SORT_BY.sample)    
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
       term: term,
