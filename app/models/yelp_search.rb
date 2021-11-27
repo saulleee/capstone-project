@@ -8,9 +8,9 @@ class YelpSearch
   DEFAULT_LIMIT = 1
   DEFAULT_SORT_BY = "review_count"
 
-  RESPONSE_LIMIT = 2
+  RESPONSE_LIMIT = 5
   
-  SUB_RESPONSE_LIMIT = 2
+  SUB_RESPONSE_LIMIT = 5
   SUB_RESPONSE_RADIUS = 1000
   SUB_RESPONSE_SORT_BY = "review_count"
 
@@ -20,11 +20,12 @@ class YelpSearch
     @trips = trips
   end
 
-  def self.retrieve_results(*terms, location)
+  def self.retrieve_results(paramsTerms, paramsLocation)
+    terms = terms(paramsTerms)
     places_array = []
 
     # the first set of search results
-    response = yelp_request(terms[0], location, limit: RESPONSE_LIMIT)
+    response = yelp_request(terms[0], paramsLocation, limit: RESPONSE_LIMIT)
     parsed_response = parse_request(response)
     places_array << parsed_response
     
@@ -100,6 +101,39 @@ class YelpSearch
     end
     
     trips_with_ids
+  end
+
+  def self.terms(bools)
+    preset_list = [ 
+      "breakfast",
+      "brunch",
+      "lunch",
+      "cafe",
+      "attractions",
+      "dinner",
+      "dessert",
+      "bar",
+      "nightlife"
+    ]
+    terms = []
+
+    if !bools.any?(true)
+      terms = [
+        "cafe",
+        "attractions",
+        "dinner",
+        "dessert",
+        "bar",
+      ]
+    else 
+      bools.each_with_index do |bool, index|
+        if bool === true
+          terms << preset_list[index]
+        end
+      end
+    end
+
+    terms
   end
 end
 

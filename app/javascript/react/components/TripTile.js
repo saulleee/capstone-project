@@ -8,8 +8,6 @@ const TripTile = (props) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
-
-    console.log(point.location.address1);
     
     return (
       <li key={point.id}>
