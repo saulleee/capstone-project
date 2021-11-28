@@ -12,4 +12,12 @@ Rails.application.routes.draw do
       post "yelp/search", to: "yelp#search"
     end
   end
+
+  namespace :api do
+    namespace :v1 do
+      resources :trips, only: [:show] do
+        resources :favorite_trips, only: [:create]
+      end
+    end
+  end
 end

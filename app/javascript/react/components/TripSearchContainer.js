@@ -18,11 +18,11 @@ const TripSearchContainer = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let submissionPost = {
+    let searchPayload = {
       location: location,
       terms: isChecked
     }
-    props.newSearch(submissionPost);
+    props.newSearch(searchPayload);
   }
 
   const checklist = terms.map((term, index) => {
