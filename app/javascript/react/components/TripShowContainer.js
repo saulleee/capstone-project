@@ -2,7 +2,6 @@ import React from "react";
 import TripShow from "./TripShow";
 
 const TripShowContainer = (props) => {
-  
   const pointDescription = props.location.state.trip.map((point) => {
     return (
       <TripShow
@@ -11,6 +10,7 @@ const TripShowContainer = (props) => {
       />
     );
   });
+  
   return (
     pointDescription
   );
