@@ -2,7 +2,6 @@ import React from "react";
 
 const TripShow = (props) => {
   const point = props.point;
-
   const categories = point.categories.map((category) => {
     return category.title;
   });
