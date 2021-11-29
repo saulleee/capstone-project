@@ -29,11 +29,16 @@ const TripsIndexContainer = (props) => {
       setTrips(responseBody);
       setLoading(false);
       // clear state
+      console.log("i'm in the try pt 1 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+      console.log(history);
       history.replace('/', { trips: [], searchQuery: body });
       history.push('/', { trips: responseBody });
+      console.log("i'm in the try pt 2 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+      console.log(history);
     } catch (error) {
       setError("Please search a location");
       setLoading(false);
+      setTrips([]);
       console.error(`Error in Fetch: ${error.message}`);
     }
   }
@@ -41,7 +46,7 @@ const TripsIndexContainer = (props) => {
   useEffect((() => {
     if (history.location.state?.trips.length > 0) {
       // debugger
-      // setTrips([])
+      setTrips([])
       setTrips(history.location.state.trips)
     }
   }), [])
@@ -56,6 +61,7 @@ const TripsIndexContainer = (props) => {
     );
   });
 
+  console.log("outside:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
   console.log(history);
 
   return (
