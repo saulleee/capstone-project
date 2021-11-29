@@ -1,0 +1,22 @@
+.log-in-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 0px 0px 0px;
+  border: 1px solid #dfe1e5;
+  border-radius: 24px 24px 24px 24px;
+}
+
+.log-in-page input {
+  height: 34px;
+  outline: none;
+}
+
+.log-in-page a {
+  text-decoration: none;
+}
+
+.log-in-page a:hover {
+  text-decoration: underline;
+}

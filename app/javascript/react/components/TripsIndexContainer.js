@@ -44,10 +44,10 @@ const TripsIndexContainer = (props) => {
   });
 
   return (
-    <div>
+    <div className="trip-search-container">
       <TripSearchContainer newSearch={newSearch} />
-      <p>{error}</p>
-      { loading ? <i className="fas fa-spinner fa-spin"></i> : tripTiles }
+      <p id="search-error-location">{error}</p>
+      { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
     </div>
   );
 }
