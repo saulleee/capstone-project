@@ -1,4 +1,4 @@
-/* logo */
+/* logo styling (upper left) */
 #logo-navbar a {
   font-size: 35px;
   font-weight: bolder;
@@ -11,10 +11,21 @@
   color: rgb(255, 0, 0);
 }
 
-/* Navbar container */
+/* navbar styling (upper right) */
+
 #profile-pic-nav-bar {
   border-radius: 50%; 
 }
+
+.sign-in {
+  padding: 10px 0px 0px 0px;
+}
+
+.sign-in a:hover {
+  text-decoration: underline;
+}
+
+/* navbar styling */
 
 .navbar {
   overflow: hidden;
@@ -24,32 +35,29 @@
   justify-content: space-between;
 }
 
-/* Links inside the navbar */
-.navbar a {
+.navbar a{
   text-decoration: none;
 }
 
-/* The dropdown container */
+/* dropdown styling */
+
 .dropdown {
   float: left;
   overflow: hidden;
 }
 
-/* Links inside the dropdown */
 .dropdown-content a {
   float: none;
-  padding: 12px 16px;
+  padding: 12px 0px;
   text-decoration: none;
   display: block;
-  text-align: left;
+  text-align: center;
 }
 
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -61,22 +69,12 @@
   border-radius: 10px;
 }
 
-/* Dropdown content underlined on hover */
 .dropdown-content a:hover {
-  text-decoration: underline;
-}
-
-.sign-in {
-  padding: 10px 0px 0px 0px;
-}
-
-.sign-in a:hover {
   text-decoration: underline;
 }
 
 /* Solid border */
 hr.solid {
   border-top: 1px solid #bbb;
-  margin-left: -10px;
-  margin-right: -10px;
+  margin: 0px -10px;
 }
