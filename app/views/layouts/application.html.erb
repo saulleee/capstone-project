@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>triply | Let's plan your trip!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-  <%= csrf_meta_tags %>
-  <link rel="stylesheet" href=https://use.fontawesome.com/releases/v5.7.1/css/all.css>
-</head>
+  <head>
+    <title>triply | Let's plan your trip!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= csrf_meta_tags %>
+    <link rel="stylesheet" href=https://use.fontawesome.com/releases/v5.7.1/css/all.css>
+  </head>
 
-<div class="top-bar">
-  <div class="top-bar-left">
-    <ul class="menu">
-      <li><%= link_to "👟 triply", root_path %></li>
-    </ul>
-  </div>
-  <div class="top-bar-right">
-    <ul class="menu">
-      <% if signed_in? %>
-        <ul class="menu dropdown" data-dropdown-menu>
-          <li><%= image_tag(current_user.profile_photo.thumb.url) %>
-            <ul class="menu">
-              <li><%= link_to "My Account", user_path(current_user.id) %></li>
-              <%= link_to "Settings", edit_user_registration_path %></li>
-              <li class="menu-link"><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-            </ul>
-          </li>
-        </ul>
-      <% else %>
-        <ul class="menu">
-          <li class="menu-link"><%= link_to "Sign In", new_user_session_path %></li>
-        </ul>
-      <% end %>
-    </ul>
-  </div>
-</div>
-
-<body>
-
-  <%- flash.each do |key, value| -%>
-    <div class="flash flash-<%= key %>">
-      <%= value %>
+  <div class="navbar">
+    <div id="logo-navbar">
+      <a href='/'>
+        triply
+        <i id="icon" class="fas fa-map-pin"></i>
+      </a>
     </div>
-  <%- end -%>
+    <% if signed_in? %>
+      <div class="dropdown">
+        <%= image_tag(current_user.profile_photo.thumb.url, id: "profile-pic-nav-bar") %>
+        <div class="dropdown-content">
+          <%= link_to "My Account", user_path(current_user.id) %>
+          <%= link_to "Settings", edit_user_registration_path %>
+          <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+        </div>
+      </div>
+    <% else %>
+      <div class="sign-in">
+        <%= link_to "Sign In", new_user_session_path %>
+      </div>
+    <% end %>
+  </div>
 
-  <%= yield %>
+  <hr class="solid">
 
-  <%= javascript_include_tag 'application' %>
-  
-  <%- if Rails.env.development? || Rails.env.test? -%> 
-    <%= javascript_tag do %>
-      window.railsEnv = '<%= Rails.env %>'
+  <body>
+    <%- flash.each do |key, value| -%>
+      <div class="flash flash-<%= key %>">
+        <%= value %>
+      </div>
     <%- end -%>
-  <%- end -%>
-  <%= javascript_pack_tag 'application' %>
+
+    <%= yield %>
+
+    <%= javascript_include_tag 'application' %>
+    
+    <%- if Rails.env.development? || Rails.env.test? -%> 
+      <%= javascript_tag do %>
+        window.railsEnv = '<%= Rails.env %>'
+      <%- end -%>
+    <%- end -%>
+
+    <%= javascript_pack_tag 'application' %>
+    
+    <div id="page-space"></div>
+  </body>
   
-  <%= yield :extra_footer %>
-</body>
+
+  <div id="footer" class="footer">
+    <a href='/about'>About</a>
+  </div>
+
 </html>
