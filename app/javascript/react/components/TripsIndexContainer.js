@@ -39,7 +39,7 @@ const TripsIndexContainer = (props) => {
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
-        key={trip.trip.id}
+        key={trip.trip.trip_id}
         trip={trip.trip}
       />
     );

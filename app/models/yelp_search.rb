@@ -97,7 +97,7 @@ class YelpSearch
     trips_with_ids = []
     
     trips.each do |i|
-      trips_with_ids << { trip: { id: SecureRandom.hex, points_attributes: i } }
+      trips_with_ids << { trip: { trip_id: SecureRandom.hex, points: i } }
     end
     
     trips_with_ids

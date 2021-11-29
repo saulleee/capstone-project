@@ -5,7 +5,7 @@ import Favorite from "./Favorite";
 const TripTile = (props) => {
   // const [trip, setTrip] = useState([]);
 
-  const pointDescription = props.trip.points_attributes.map((point) => {
+  const pointDescription = props.trip.points.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
@@ -27,7 +27,7 @@ const TripTile = (props) => {
       <Favorite trip={props} />
       <Link 
         to={{
-          pathname: `/trips/${props.trip.id}`,
+          pathname: `/trips/${props.trip.trip_id}`,
           state: props
         }}
       >
