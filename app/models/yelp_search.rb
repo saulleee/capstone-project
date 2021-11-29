@@ -120,10 +120,7 @@ class YelpSearch
     if !bools.any?(true)
       terms = [
         "cafe",
-        "attractions",
-        "dinner",
-        "dessert",
-        "bar",
+        "attractions"
       ]
     else 
       bools.each_with_index do |bool, index|

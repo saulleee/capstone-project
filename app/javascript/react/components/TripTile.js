@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Favorite from "./Favorite";
 
 const TripTile = (props) => {
-  const [trip, setTrip] = useState([]);
+  // const [trip, setTrip] = useState([]);
 
   const pointDescription = props.trip.points.map((point) => {
     const categories = point.categories.map((category) => {
@@ -17,17 +17,18 @@ const TripTile = (props) => {
     )
   });
   
-  useEffect(() => {
-    setTrip(trip);
-  }, []);
-
+  // useEffect(() => {
+  //   setTrip(trip);
+  // }, []);
+  // debugger;
+  
   return (
     <div className="trip-tile">
-      <Favorite trip={trip} />
+      <Favorite trip={props} />
       <Link 
         to={{
-          pathname: `/trips/${props.id}`,
-          state: trip
+          pathname: `/trips/${props.trip.id}`,
+          state: props
         }}
       >
         <ol>

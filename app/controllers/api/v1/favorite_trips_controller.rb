@@ -10,7 +10,7 @@ class Api::V1::FavoriteTripsController < ApplicationController
   private
 
   def trip_params
-    params.require(:trip).permit(:id, points: [
+    params.require(:trip).permit(:id, points_attributes: [
       :id, 
       :alias, 
       :name, 

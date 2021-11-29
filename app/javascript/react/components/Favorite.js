@@ -26,7 +26,7 @@ const Favorite = (props) => {
   return (
     <div>
     <form onSubmit={(e)=>{e.preventDefault(), newFavorite(trip)}}>
-      <input type='submit' value='🙌' />
+      <input type='submit' value='⭐️' />
     </form>
   </div>
   );

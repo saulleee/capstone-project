@@ -18,6 +18,7 @@ const TripSearchContainer = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // if (isChecked.every(term => term === false))
     let searchPayload = {
       location: location,
       terms: isChecked
