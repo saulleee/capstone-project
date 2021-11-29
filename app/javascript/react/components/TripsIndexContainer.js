@@ -10,11 +10,11 @@ const TripsIndexContainer = (props) => {
   const newSearch = async (searchPayload) => {
     setError('');
     setLoading(true);
-
+    const body = JSON.stringify(searchPayload);
     try {
       const response = await fetch("/api/v1/yelp/search", {
         method: "POST",
-        body: JSON.stringify(searchPayload),
+        body: body,
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
@@ -38,8 +38,9 @@ const TripsIndexContainer = (props) => {
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
-        key={trip.trip.id}
-        trip={trip}
+        key={trip.id}
+        id={trip.id}
+        trip={trip.trip}
       />
     );
   });
