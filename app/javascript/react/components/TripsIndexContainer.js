@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import history from "./history";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
@@ -28,6 +28,8 @@ const TripsIndexContainer = (props) => {
       const responseBody = await response.json();
       setTrips(responseBody);
       setLoading(false);
+      // clear state
+      history.replace('/', { trips: [], searchQuery: body });
       history.push('/', { trips: responseBody });
     } catch (error) {
       setError("Please search a location");
@@ -35,6 +37,14 @@ const TripsIndexContainer = (props) => {
       console.error(`Error in Fetch: ${error.message}`);
     }
   }
+
+  useEffect((() => {
+    if (history.location.state?.trips.length > 0) {
+      // debugger
+      // setTrips([])
+      setTrips(history.location.state.trips)
+    }
+  }), [])
 
   const tripTiles = trips.map((trip) => {
     return (
