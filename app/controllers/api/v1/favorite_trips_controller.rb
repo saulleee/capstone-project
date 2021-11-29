@@ -24,10 +24,10 @@ class Api::V1::FavoriteTripsController < ApplicationController
       :display_phone, 
       :distance
     ])
-    # params.require(:trip).permit(      :categories => [:alias, :title], )
   end
 end
 
+# params.require(:trip).permit(      :categories => [:alias, :title], )
 # :location => [], 
 # coordinates: [], 
 # transactions: [], 

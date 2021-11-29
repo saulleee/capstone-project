@@ -5,7 +5,7 @@ import Favorite from "./Favorite";
 const TripTile = (props) => {
   // const [trip, setTrip] = useState([]);
 
-  const pointDescription = props.trip.points.map((point) => {
+  const pointDescription = props.trip.points_attributes.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
