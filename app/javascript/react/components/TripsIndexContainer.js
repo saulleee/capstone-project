@@ -37,8 +37,8 @@ const TripsIndexContainer = (props) => {
       console.log(history);
     } catch (error) {
       setError("Please search a location");
-      setLoading(false);
       setTrips([]);
+      setLoading(false);
       console.error(`Error in Fetch: ${error.message}`);
     }
   }
@@ -65,11 +65,15 @@ const TripsIndexContainer = (props) => {
   console.log(history);
 
   return (
-    <div>
-      <TripSearchContainer newSearch={newSearch} />
-      <p>{error}</p>
-      { loading ? <i className="fas fa-spinner fa-spin"></i> : tripTiles }
-    </div>
+    <>
+      <div className="trip-search-container">
+        <TripSearchContainer newSearch={newSearch} />
+        <p id="search-error-location">{error}</p>
+      </div>
+      <div className="trip-search-results">
+        { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
+      </div>
+    </>
   );
 }
 
