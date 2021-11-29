@@ -23,21 +23,18 @@ const TripTile = (props) => {
   }, []);
 
   return (
-    <>
-      <Favorite trip={props.trip} />
+    <div className="trip-tile">
       <Link 
-      to={{
-        pathname: `/trips/${trip.id}`,
-        state: tripState
-      }}
+        to={{
+          pathname: `/trips/${props.id}`,
+          state: points
+        }}
       >
-        <div>
-          <ol>
-            {pointDescription}
-          </ol>
-        </div>
+        <ol>
+          {pointDescription}
+        </ol>
       </Link>
-    </>
+    </div>
   );
 }
 
