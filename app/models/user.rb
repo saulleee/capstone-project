@@ -8,6 +8,6 @@ class User < ApplicationRecord
 
   mount_uploader :profile_photo, ProfilePhotoUploader
 
-  has_many :favorites
-  has_many :trips, through: :favorites
+  has_many :favorite_trips
+  has_many :trips, through: :favorite_trips
 end

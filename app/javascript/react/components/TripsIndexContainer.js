@@ -9,6 +9,7 @@ const TripsIndexContainer = (props) => {
   const [error, setError] = useState([]);
 
   const newSearch = async (searchPayload) => {
+    setError([]);
     setLoading(true);
     try {
       const response = await fetch("/api/v1/yelp/search", {

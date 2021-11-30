@@ -4,22 +4,16 @@ class Api::V1::FavoriteTripsController < ApplicationController
 
   def create
     trip = Trip.new(trip_params)
+
     points_params[:points].each do |point|
-      if Place.where(yelp_id: point[:yelp_id])
-        trip.places << Place.where(yelp_id: point[:yelp_id])
+      if Place.find_by(yelp_id: point[:yelp_id])
+        trip.places << Place.find_by(yelp_id: point[:yelp_id])
       else
         trip.places << Place.create(point)
       end
     end
-
-    # begin
-    #   # place = Place.new(trip_params.points[0])
-    #   # trip.user = current_user
-    #   # trip.place = place
-      
-    # rescue => exception
-      
-    # end
+    
+    current_user.trips << trip
   end
 
   private

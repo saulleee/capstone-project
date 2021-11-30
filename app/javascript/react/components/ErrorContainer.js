@@ -1,9 +1,9 @@
 import React from "react";
 
 const ErrorContainer = ((props) => {  
-  const errors = props.error.map((message) => {
+  const errors = props.error.map((message, index) => {
     return (
-      <div>
+      <div key={index}>
         <p>{message}</p>
       </div>
     );
