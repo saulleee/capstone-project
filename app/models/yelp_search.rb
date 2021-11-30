@@ -28,7 +28,7 @@ class YelpSearch
     response = yelp_request(terms[0], paramsLocation, limit: RESPONSE_LIMIT)
     parsed_response = parse_request(response)
     places_array << parsed_response
-    
+
     if terms.length > 1
       sub_terms = terms.drop(1)
       sub_terms.each do |term|
@@ -38,7 +38,7 @@ class YelpSearch
           location = place["location"]["display_address"].join(" ")
           sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
           
-          array_of_trips = zip(places_array)
+          array_of_trips = zip_arrays(places_array)
           array_of_places = parse_request(sub_response)
                     
           # returns each trip with unique points compared to its SPECIFIC trip
@@ -56,7 +56,15 @@ class YelpSearch
       end
     end
 
-    trips = zip(places_array)
+    places_array_updated_keys = places_array.map do |array|
+      array.each do |place|
+        rename_key(place, "id", "yelp_id")
+        delete_key(place, "alias", "is_closed", "coordinates", "transactions", "phone", "display_phone", "distance")
+        place
+      end
+    end
+
+    trips = zip_arrays(places_array_updated_keys)
     trips_with_ids = trip_id_generator(trips)
     YelpSearch.new(trips_with_ids)
   end
@@ -77,8 +85,19 @@ class YelpSearch
     parsed_response = JSON.parse(response.body)
     return parsed_response["businesses"]
   end
+
+  def self.rename_key(obj, old_key, new_key)
+    obj[new_key] = obj[old_key]
+    obj.delete(old_key)
+  end
+
+  def self.delete_key(obj, *old_key)
+    old_key.each do |key|
+      obj.delete(key)
+    end
+  end
   
-  def self.zip(places_array)
+  def self.zip_arrays(places_array)
     trips = []
     
     if places_array.length > 1

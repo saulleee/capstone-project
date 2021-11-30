@@ -3,7 +3,16 @@ class Api::V1::FavoriteTripsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
 
   def create
-    trip = Trip.new(trip_params)
+    begin
+      trip = Trip.new(trip_params)
+      binding.pry
+      # place = Place.new(trip_params.points[0])
+      # trip.user = current_user
+      # trip.place = place
+      
+    rescue => exception
+      
+    end
   end
 
   private

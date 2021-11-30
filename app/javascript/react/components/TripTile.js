@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Favorite from "./Favorite";
 
-const TripTile = (props) => {
-  // const [trip, setTrip] = useState([]);
-
+const TripTile = (props) => {  
   const pointDescription = props.trip.points.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
     
     return (
-      <li key={point.id}>
+      <li key={point.yelp_id}>
         Name: {point.name} | Categories: {categories.join(", ")} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
       </li>
     )
   });
-  
-  // useEffect(() => {
-  //   setTrip(trip);
-  // }, []);
-  // debugger;
   
   return (
     <div className="trip-tile">
