@@ -3,16 +3,23 @@ class Api::V1::FavoriteTripsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
 
   def create
-    begin
-      trip = Trip.new(trip_params)
-      binding.pry
-      # place = Place.new(trip_params.points[0])
-      # trip.user = current_user
-      # trip.place = place
-      
-    rescue => exception
-      
+    trip = Trip.new(trip_params)
+    points_params[:points].each do |point|
+      if Place.where(yelp_id: point[:yelp_id])
+        trip.places << Place.where(yelp_id: point[:yelp_id])
+      else
+        trip.places << Place.create(point)
+      end
     end
+
+    # begin
+    #   # place = Place.new(trip_params.points[0])
+    #   # trip.user = current_user
+    #   # trip.place = place
+      
+    # rescue => exception
+      
+    # end
   end
 
   private
@@ -23,7 +30,7 @@ class Api::V1::FavoriteTripsController < ApplicationController
 
   def points_params
     params.require(:trip).permit(points: [
-      :id,
+      :yelp_id,
       :name,
       :image_url,
       :url,

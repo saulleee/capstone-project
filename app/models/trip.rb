@@ -1,5 +1,5 @@
 class Trip < ApplicationRecord
-  validates :trip_id, presence: true
+  validates :trip_id, presence: true, uniqueness: true
 
   has_many :favorites
   has_many :users, through: :favorites

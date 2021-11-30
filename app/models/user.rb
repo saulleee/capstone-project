@@ -7,4 +7,7 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
 
   mount_uploader :profile_photo, ProfilePhotoUploader
+
+  has_many :favorites
+  has_many :trips, through: :favorites
 end

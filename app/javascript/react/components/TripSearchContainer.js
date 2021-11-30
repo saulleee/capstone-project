@@ -7,6 +7,9 @@ const TripSearchContainer = (props) => {
   const [isChecked, setIsChecked] = useState(
     new Array(terms.length).fill(false)
   );
+  const error = props.error;
+  const setError = props.setError;
+  const newSearch = props.newSearch;
 
   const handleOnChangeCheck = (position) => {
     const updatedIsChecked = isChecked.map((item, index) =>
@@ -23,7 +26,7 @@ const TripSearchContainer = (props) => {
       location: location,
       terms: isChecked
     }
-    props.newSearch(searchPayload);
+    newSearch(searchPayload);
   }
 
   const checklist = terms.map((term, index) => {
@@ -49,7 +52,7 @@ const TripSearchContainer = (props) => {
                 </path>
               </svg>
             </span>
-            <input id="search-container-input" type='text' autoFocus="on" name='location' placeholder="Boston" value={location} onChange={(e)=>setLocation(e.target.value)} />
+            <input id="search-container-input" type='text' autoFocus="on" name='location' placeholder="new york city" value={location} onChange={(e)=>setLocation(e.target.value)} />
           </div>
 
           <div className="checklist-container">

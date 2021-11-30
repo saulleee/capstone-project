@@ -17,7 +17,11 @@ const TripTile = (props) => {
   
   return (
     <div className="trip-tile">
-      <Favorite trip={props} />
+      <Favorite 
+        trip={props} 
+        error={props.error}
+        setError={props.setError}
+      />
       <Link 
         to={{
           pathname: `/trips/${props.trip.trip_id}`,
