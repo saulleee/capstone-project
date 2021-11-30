@@ -7,6 +7,7 @@ const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
+  const [favorited, setFavorited] = useState('');
 
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -42,6 +43,8 @@ const TripsIndexContainer = (props) => {
         trip={trip.trip}
         error={error}
         setError={setError}
+        favorited={favorited}
+        setFavorited={setFavorited}
       />
     );
   });

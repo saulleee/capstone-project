@@ -21,6 +21,8 @@ const TripTile = (props) => {
         trip={props} 
         error={props.error}
         setError={props.setError}
+        favorited={props.favorited}
+        setFavorited={props.setFavorited}
       />
       <Link 
         to={{

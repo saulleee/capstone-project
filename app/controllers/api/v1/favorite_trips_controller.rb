@@ -3,17 +3,32 @@ class Api::V1::FavoriteTripsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
 
   def create
-    trip = Trip.new(trip_params)
+    if Trip.find_by(trip_id: trip_params[:trip_id])
+      current_user.trips.find_by(trip_id: trip_params[:trip_id]).delete
+      render json: { message: "Successfully unfavorited" }
+    else
+      trip = Trip.new(trip_params)
 
-    points_params[:points].each do |point|
-      if Place.find_by(yelp_id: point[:yelp_id])
-        trip.places << Place.find_by(yelp_id: point[:yelp_id])
+      points_params[:points].each do |point|
+        if Place.find_by(yelp_id: point[:yelp_id])
+          trip.places << Place.find_by(yelp_id: point[:yelp_id])
+        else
+          temp = Place.new(point)
+          if temp.save
+            trip.places << temp
+          else
+            render json: { message: "Something went wrong" }
+          end
+        end
+      end
+
+      if trip.save
+        current_user.trips << trip
+        render json: { message: "Sucessfully favorited" }
       else
-        trip.places << Place.create(point)
+        render json: { message: "Something went wrong" }
       end
     end
-    
-    current_user.trips << trip
   end
 
   private
