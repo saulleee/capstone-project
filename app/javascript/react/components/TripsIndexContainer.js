@@ -7,7 +7,7 @@ const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
-  // const [favorited, setFavorited] = useState('');
+  const [favorited, setFavorited] = useState('');
 
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -29,7 +29,7 @@ const TripsIndexContainer = (props) => {
       setTrips(responseBody);
       setLoading(false);
     } catch (e) {
-      // setError([...error, "Please search a location"]);
+      setError([...error, "Please search a location"]);
       setTrips([]);
       setLoading(false);
       console.error(`Error in Fetch: ${e.message}`);
@@ -41,8 +41,8 @@ const TripsIndexContainer = (props) => {
       <TripTile
         key={trip.trip.trip_id}
         trip={trip.trip}
-        // error={error}
-        // setError={setError}
+        error={error}
+        setError={setError}
         // setFavorited={setFavorited}
       />
     );
@@ -53,8 +53,8 @@ const TripsIndexContainer = (props) => {
       <div className="trip-search-container">
         <TripSearchContainer 
           newSearch={newSearch} 
-          // error={error}
-          // setError={setError}
+          error={error}
+          setError={setError}
         />
       </div>
       {/* <div className="error-messages">
