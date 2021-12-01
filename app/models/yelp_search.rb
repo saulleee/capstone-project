@@ -28,7 +28,7 @@ class YelpSearch
     terms = terms(paramsTerms)
 
     # first set of results
-    initial_response = yelp_request([terms[0]], paramsLocation, limit: INITIAL_RESPONSE_LIMIT)
+    initial_response = yelp_request(terms[0], paramsLocation, limit: INITIAL_RESPONSE_LIMIT)
     initial_parsed_response = parse_request(initial_response)
 
     # if yelp throws an error or if there just aren't a first set of results
@@ -39,19 +39,16 @@ class YelpSearch
 
     # set MRH with first set's results
     main_results_hash = {}
-    create_hash_from_results(terms, initial_parsed_response, main_results_hash)
-
-    ############################################################
+    main_results_hash[terms[0]] = initial_parsed_response
+    binding.pry
 
     if terms.length > 1
-      create_hash_from_results(terms, main_results_hash)
-      a = retrieve_sub_results(terms, main_results_hash)
-
+      mrh_copy = retrieve_sub_results(terms, main_results_hash)
+      main_results_hash.update(mrh_copy)
     end
-
-    ############################################################
+    binding.pry
     
-    trips = create_trips_from_results(main_results_hash)
+    trips = create_trips(main_results_hash)
 
     # if somehow all the trips got wiped out
     if trips.nil?
@@ -66,75 +63,118 @@ class YelpSearch
     YelpSearch.new(updated_trips_with_ids, error)
   end
 
+  # HELPER METHODS FOR THE METHOD ABOVE #########################################################
+  
+  def self.create_trips(main_results_hash)
+    mrh = main_results_hash
+    number_of_places = mrh.values[0].length
 
-  # BOOKMARK ###################################################
+    trips = []
+    i = 0
+    
+    while i < number_of_places
+      temp = []
+
+      mrh.each do |term, results|
+        if results[i] != nil
+          temp << results[i]
+        else
+          i += 1
+          next
+        end
+      end
+
+      i += 1
+      trips << temp
+    end
+
+    return trips
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   def self.retrieve_sub_results(terms, main_results_hash)
     subterms = terms.drop(1)
-    mrh = main_results_hash
+    unique_results_array = []
+    inital_results = main_results_hash.values[0]
+
+    subterms.each do |subterm|      
+      inital_results.each_with_index do |place, i|
+        initial_location = place["location"]["display_address"].join(" ")        
+
+        # results for the current term based on the location of the first place of current index
+        subresponse = yelp_request(subterm, initial_location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
+        subresults = parse_request(subresponse)        
+
+        # create IDs in a set of each place of current index of each result
+        id_values = set_ids(main_results_hash, i)  ############################        
+        binding.pry
+
+        mrh_copy = main_results_hash        
+
+        # add each unique place (or an empty place if none found) to main_results_hash at main_results_hash[term]
+        # by comparing subresults and id_values
+        unique_result_hash = unique_place(subterm, subresults, id_values)
+        unique_results_array << unique_result_hash        
     
-    zipped_mrh = zip_to_make_trips(mrh)
-
-    subterms.each do |term|
-      mrh.values.first.each do |place|
-        location = place["location"]["display_address"].join(" ")
-        subreponse = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
-        ??? = parse_request(subreponse)
-        
-        id_values = Set.new
-        
-        zipped_mrh[index???].each do |key, value|
-          id_values << zipped_mrh[index???]["id"]
-        end
-
-
-
-
-
-
-
-        response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
-        all_search_results << parse_request(response)
-
-
-
-
-
-
-
-
-
+        unique_results_array.each do |unique_result_hash|
+          term = unique_result_hash.keys[0]
+          mrh_copy[term] = unique_result_hash.values
+        end        
+      end      
     end
-    
+
+    binding.pry
+    return mrh_copy
   end
 
-  def self.zip_to_make_trips(main_results_hash)
-    array_of_values = main_results_hash.values
-    array_of_values.first, *array_of_values.last = array_of_values
-    zipped_values = array_of_values.first.zip(*array_of_values.last)
-    return zipped_values
-  end
-  
-  def self.create_trips_from_results(results)
-    terms = results.keys
-    trips_array = []
-    
-    results.each do |term, places|  
-      places.each do |place|
-        temp_array = []
-        if place
-          temp_array << place
-        end
-        trips_array << temp_array
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  def self.unique_place(subterm, subresults, id_values)
+    temp_results_hash = {}    
+
+    subresults.each do |place|
+      if !id_values.include?(place["id"])
+        temp_results_hash[subterm] = place        
+        break
       end
+      temp_results_hash[subterm] =  nil
     end
     
-    return trips_array
+    return temp_results_hash    
   end
 
-  def self.create_hash_from_results(terms, parsed_response, main_results_hash)
-    terms.each do |term|
-      main_results_hash[term] = parsed_response
+  def self.set_ids(main_results_hash, index)
+    id_values = Set.new
+    main_results_hash.each do |term, results|
+      id_values << results[index]["id"]
     end
+
+    return id_values
   end
 
   def self.trip_id_generator(trips)
