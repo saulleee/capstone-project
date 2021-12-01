@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
 import ErrorContainer from "./ErrorContainer";
@@ -6,7 +6,7 @@ import ErrorContainer from "./ErrorContainer";
 const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState('');
   const [favorited, setFavorited] = useState('');
 
   const newSearch = async (searchPayload) => {
@@ -26,7 +26,11 @@ const TripsIndexContainer = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      setTrips(responseBody);
+      if (responseBody.error) {
+        setError(responseBody.error)
+      } else {
+        setTrips(responseBody.trips)
+      }
       setLoading(false);
     } catch (e) {
       setError([...error, "Please search a location"]);
@@ -36,14 +40,18 @@ const TripsIndexContainer = (props) => {
     }
   }
 
+  const handleFavoritedState = (favorited_trip) => {
+    setFavorited(favorited_trip);
+  }
+  
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
         key={trip.trip.trip_id}
         trip={trip.trip}
-        error={error}
-        setError={setError}
-        // setFavorited={setFavorited}
+        // error={error}
+        // setError={setError}
+        handleFavoritedState={handleFavoritedState}
       />
     );
   });
@@ -53,16 +61,16 @@ const TripsIndexContainer = (props) => {
       <div className="trip-search-container">
         <TripSearchContainer 
           newSearch={newSearch} 
-          error={error}
-          setError={setError}
+          // error={error}
+          // setError={setError}
         />
       </div>
       {/* <div className="error-messages">
         <ErrorContainer error={error} />
       </div> */}
-      {/* <div>
-        {favorited}
-      </div> */}
+      <div>
+        {error}
+      </div>
       <div className="trip-search-results">
         { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
       </div>

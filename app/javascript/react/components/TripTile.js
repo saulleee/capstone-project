@@ -4,13 +4,15 @@ import Favorite from "./Favorite";
 
 const TripTile = (props) => {  
   const pointDescription = props.trip.points.map((point) => {
-    const categories = point.categories.map((category) => {
-      return category.title;
-    });
+    // const categories = point.categories.map((category) => {
+    //   return category.title;
+    // });
+
+    // Categories: {categories.join(", ")} | 
     
     return (
       <li key={point.yelp_id}>
-        Name: {point.name} | Categories: {categories.join(", ")} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
+        Name: {point.name} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
       </li>
     )
   });
@@ -21,7 +23,7 @@ const TripTile = (props) => {
         trip={props} 
         // error={props.error}
         // setError={props.setError}
-        // setFavorited={props.setFavorited}
+        handleFavoritedState={props.handleFavoritedState}
       />
       <Link 
         to={{

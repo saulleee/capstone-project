@@ -1,4 +1,5 @@
 require "securerandom"
+require "set"
 
 class YelpSearch
   API_KEY = ENV["YELP_KEY"]
@@ -6,69 +7,146 @@ class YelpSearch
   SEARCH_PATH = "/v3/businesses/search"
 
   DEFAULT_LIMIT = 1
-  DEFAULT_SORT_BY = ["review_count", "distance", "best_match", "rating"]
+  DEFAULT_SORT_BY = ["rating"]
+  # DEFAULT_SORT_BY = ["review_count", "best_match", "rating"]
 
-  RESPONSE_LIMIT = 2
+  INITIAL_RESPONSE_LIMIT = 2
   
   SUB_RESPONSE_LIMIT = 2
   SUB_RESPONSE_RADIUS = 1000
-  SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
+  SUB_RESPONSE_SORT_BY = ["rating"]
+  # SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
   attr_reader :trips
 
-  def initialize(trips)
+  def initialize(trips, error)
     @trips = trips
+    @error = error
   end
 
   def self.retrieve_results(paramsTerms, paramsLocation)
     terms = terms(paramsTerms)
-    places_array = []
 
-    # the first set of search results
-    response = yelp_request(terms[0], paramsLocation, limit: RESPONSE_LIMIT)
-    parsed_response = parse_request(response)
-    places_array << parsed_response
+    # first set of results
+    initial_response = yelp_request([terms[0]], paramsLocation, limit: INITIAL_RESPONSE_LIMIT)
+    initial_parsed_response = parse_request(initial_response)
+
+    # if yelp throws an error or if there just aren't a first set of results
+    if initial_parsed_response.nil?
+      updated_trips_with_ids = nil
+      error = "Not enough points of interest to create a trip 😔"
+    end
+
+    # set MRH with first set's results
+    main_results_hash = {}
+    create_hash_from_results(terms, initial_parsed_response, main_results_hash)
+
+    ############################################################
 
     if terms.length > 1
-      sub_terms = terms.drop(1)
-      sub_terms.each do |term|
-        temp = []
-        parsed_response.each_with_index do |place, index|
-          # location is set just to the FIRST POINT'S location
-          location = place["location"]["display_address"].join(" ")
-          sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
-          
-          array_of_trips = zip_arrays(places_array)
-          array_of_places = parse_request(sub_response)
-                    
-          # returns each trip with unique points compared to its SPECIFIC trip
-          array_of_places.each do |place|
-            id_exists_bool = array_of_trips[index].any? { |point| point["id"] == place["id"] }
-            
-            if id_exists_bool == false
-              temp << place
-              break
-            end
-          end
-        end
+      create_hash_from_results(terms, main_results_hash)
+      a = retrieve_sub_results(terms, main_results_hash)
+
+    end
+
+    ############################################################
+    
+    trips = create_trips_from_results(main_results_hash)
+
+    # if somehow all the trips got wiped out
+    if trips.nil?
+      updated_trips_with_ids = nil
+      error = "Not enough points of interest to create a trip 😔"
+    end
+
+    # final preparations of the trips to send to front end
+    updated_trips_with_keys = update_keys(trips)
+    updated_trips_with_ids = trip_id_generator(updated_trips_with_keys)
+    
+    YelpSearch.new(updated_trips_with_ids, error)
+  end
+
+
+  # BOOKMARK ###################################################
+  def self.retrieve_sub_results(terms, main_results_hash)
+    subterms = terms.drop(1)
+    mrh = main_results_hash
+    
+    zipped_mrh = zip_to_make_trips(mrh)
+
+    subterms.each do |term|
+      mrh.values.first.each do |place|
+        location = place["location"]["display_address"].join(" ")
+        subreponse = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
+        ??? = parse_request(subreponse)
         
-        places_array << temp
-      end
-    end
+        id_values = Set.new
+        
+        zipped_mrh[index???].each do |key, value|
+          id_values << zipped_mrh[index???]["id"]
+        end
 
-    places_array_updated_keys = places_array.map do |array|
-      array.each do |place|
-        rename_key(place, "id", "yelp_id")
-        delete_key(place, "alias", "is_closed", "coordinates", "transactions", "phone", "display_phone", "distance")
-        place
-      end
-    end
 
-    trips = zip_arrays(places_array_updated_keys)
-    trips_with_ids = trip_id_generator(trips)
-    YelpSearch.new(trips_with_ids)
+
+
+
+
+
+        response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
+        all_search_results << parse_request(response)
+
+
+
+
+
+
+
+
+
+    end
+    
+  end
+
+  def self.zip_to_make_trips(main_results_hash)
+    array_of_values = main_results_hash.values
+    array_of_values.first, *array_of_values.last = array_of_values
+    zipped_values = array_of_values.first.zip(*array_of_values.last)
+    return zipped_values
   end
   
+  def self.create_trips_from_results(results)
+    terms = results.keys
+    trips_array = []
+    
+    results.each do |term, places|  
+      places.each do |place|
+        temp_array = []
+        if place
+          temp_array << place
+        end
+        trips_array << temp_array
+      end
+    end
+    
+    return trips_array
+  end
+
+  def self.create_hash_from_results(terms, parsed_response, main_results_hash)
+    terms.each do |term|
+      main_results_hash[term] = parsed_response
+    end
+  end
+
+  def self.trip_id_generator(trips)
+    trips_with_ids = []
+    
+    trips.each do |i|
+      trips_with_ids << { trip: { trip_id: SecureRandom.hex, points: i } }
+    end
+    
+    return trips_with_ids
+  end
+
   def self.yelp_request(term, location, limit: DEFAULT_LIMIT, radius: nil, sort_by: DEFAULT_SORT_BY.sample)    
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
@@ -79,11 +157,28 @@ class YelpSearch
       sort_by: sort_by
     }
     response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+    return response
   end
   
   def self.parse_request(response)
     parsed_response = JSON.parse(response.body)
-    return parsed_response["businesses"]
+    begin
+      return parsed_response["businesses"]
+    rescue
+      return nil
+    end
+  end
+
+  def self.update_keys(trips)
+    updated_trips = trips.map do |trip|
+      trip.each do |place|
+        rename_key(place, "id", "yelp_id")
+        delete_key(place, "alias", "is_closed", "coordinates", "transactions", "phone", "display_phone", "distance")
+        place
+      end
+    end
+    
+    return updated_trips
   end
 
   def self.rename_key(obj, old_key, new_key)
@@ -95,31 +190,6 @@ class YelpSearch
     old_key.each do |key|
       obj.delete(key)
     end
-  end
-  
-  def self.zip_arrays(places_array)
-    trips = []
-    
-    if places_array.length > 1
-      sub_arrays = places_array.drop(1)
-      trips = places_array[0].zip(*sub_arrays)
-    else
-      places_array[0].each do |place|
-        trips << [place]
-      end
-    end
-    
-    trips
-  end
-  
-  def self.trip_id_generator(trips)
-    trips_with_ids = []
-    
-    trips.each do |i|
-      trips_with_ids << { trip: { trip_id: SecureRandom.hex, points: i } }
-    end
-    
-    trips_with_ids
   end
 
   def self.terms(bools)
@@ -149,6 +219,6 @@ class YelpSearch
       end
     end
 
-    terms
+    return terms
   end
 end

@@ -20,16 +20,21 @@ const Favorite = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      // props.setFavorited(responseBody.message);
+      props.handleFavoritedState(responseBody.message);
     } catch (e) {
       // setError([...error, "Please log in"]);
       console.error(`Error in Fetch: ${e.message}`);
     }
   }
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    newFavorite(trip);
+  }
+
   return (
     <div>
-      <form onSubmit={(e)=>{e.preventDefault(), newFavorite(trip)}}>
+      <form onSubmit={onSubmitHandler}>
         <input type='submit' className="favorite-button" value='🥰' />
       </form>
     </div>

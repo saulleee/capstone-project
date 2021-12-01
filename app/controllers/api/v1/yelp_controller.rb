@@ -3,6 +3,6 @@ class Api::V1::YelpController < ApplicationController
 
   def search
     response = YelpSearch.retrieve_results(params[:terms], params[:location])
-    render json: response.trips
+    render json: response
   end
 end
