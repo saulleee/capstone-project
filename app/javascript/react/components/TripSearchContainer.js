@@ -20,13 +20,14 @@ const TripSearchContainer = (props) => {
 
   //   setIsChecked(updatedIsChecked);
   // }
+
   const [optionSelected, setOptionSelected] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let submissionPost = {
       location: location,
-      terms: isChecked
+      terms: optionSelected
     }
     props.newSearch(submissionPost);
   }
@@ -42,11 +43,8 @@ const TripSearchContainer = (props) => {
   //     />
   //   );
   // });
-
-
-
-
-
+  
+  
   const Option = (props) => {
     return (
       <div>
@@ -55,33 +53,17 @@ const TripSearchContainer = (props) => {
             type="checkbox"
             checked={props.isSelected}
             onChange={() => null}
-          />{" "}
+            />{" "}
           <label>{props.label}</label>
         </components.Option>
       </div>
     );
   };
-
+  
   const handleChange = (selected) => {
     setOptionSelected(selected);
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -99,6 +81,7 @@ const TripSearchContainer = (props) => {
           {/* <div className="checklist-container">
             {checklist}
           </div> */}
+
 
 
           <ReactSelect

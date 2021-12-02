@@ -103,16 +103,17 @@ class YelpSearch
     trips_with_ids
   end
 
-  def self.terms(bools)
+  def self.terms(paramsTerms)
+    binding.pry
     preset_list = [ 
       "breakfast",
       "brunch",
       "lunch",
-      "cafe",
+      "cafes",
       "attractions",
       "dinner",
       "dessert",
-      "bar",
+      "bars",
       "nightlife"
     ]
     terms = []
@@ -120,9 +121,7 @@ class YelpSearch
     if !bools.any?(true)
       terms = [
         "cafe",
-        "attractions",
-        "dinner",
-        "bar"
+        "dessert"
       ]
     else 
       bools.each_with_index do |bool, index|
