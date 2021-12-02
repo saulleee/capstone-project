@@ -33,38 +33,32 @@ class YelpSearch
 
     # if yelp throws an error or if there just aren't a first set of results
     if initial_parsed_response.nil?
-      updated_trips_with_ids = nil
-      error = "Not enough points of interest to create a trip 😔"
+      return YelpSearch.new(nil, "Not enough points of interest to create a trip 😔")
     end
 
     # set MRH with first set's results
     main_results_hash = {}
     main_results_hash[terms[0]] = initial_parsed_response
-    binding.pry
 
     if terms.length > 1
       mrh_copy = retrieve_sub_results(terms, main_results_hash)
       main_results_hash.update(mrh_copy)
     end
-    binding.pry
     
     trips = create_trips(main_results_hash)
 
     # if somehow all the trips got wiped out
-    if trips.nil?
-      updated_trips_with_ids = nil
-      error = "Not enough points of interest to create a trip 😔"
+    if trips.empty?
+      return YelpSearch.new(nil, "Not enough points of interest to create a trip 😔")
     end
 
     # final preparations of the trips to send to front end
     updated_trips_with_keys = update_keys(trips)
-    updated_trips_with_ids = trip_id_generator(updated_trips_with_keys)
+    main_trips = trip_id_generator(updated_trips_with_keys)
     
-    YelpSearch.new(updated_trips_with_ids, error)
+    return YelpSearch.new(main_trips, nil)
   end
 
-  # HELPER METHODS FOR THE METHOD ABOVE #########################################################
-  
   def self.create_trips(main_results_hash)
     mrh = main_results_hash
     number_of_places = mrh.values[0].length
@@ -72,87 +66,75 @@ class YelpSearch
     trips = []
     i = 0
     
+    # while i < number_of_places
+    #   catch (:not_an_array) do
+    #     temp = []
+
+    #     mrh.each do |term, results|             
+    #       if results[i] != nil          
+    #         temp << results[i]
+    #       else
+    #         i += 1
+    #         throw :not_an_array
+    #       end
+    #     end      
+    #     i += 1
+    #     trips << temp
+    #   end
+    # end
+
     while i < number_of_places
       temp = []
 
-      mrh.each do |term, results|
-        if results[i] != nil
-          temp << results[i]
-        else
-          i += 1
-          next
+      mrh.each do |term, results|             
+        if results[i] == nil
+          temp = []
+          break
         end
-      end
-
+        temp << results[i]
+      end      
       i += 1
-      trips << temp
+      if !temp.empty?
+        trips << temp
+      end
     end
 
     return trips
   end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   def self.retrieve_sub_results(terms, main_results_hash)
     subterms = terms.drop(1)
     unique_results_array = []
     inital_results = main_results_hash.values[0]
+    mrh_copy = main_results_hash
 
-    subterms.each do |subterm|      
+    subterms.each do |subterm|
+      unique_results_array = []
+
       inital_results.each_with_index do |place, i|
         initial_location = place["location"]["display_address"].join(" ")        
-
+        
         # results for the current term based on the location of the first place of current index
         subresponse = yelp_request(subterm, initial_location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
         subresults = parse_request(subresponse)        
-
+        
         # create IDs in a set of each place of current index of each result
-        id_values = set_ids(main_results_hash, i)  ############################        
-        binding.pry
-
-        mrh_copy = main_results_hash        
-
+        id_values = set_ids(main_results_hash, i) 
+        
         # add each unique place (or an empty place if none found) to main_results_hash at main_results_hash[term]
         # by comparing subresults and id_values
         unique_result_hash = unique_place(subterm, subresults, id_values)
-        unique_results_array << unique_result_hash        
-    
-        unique_results_array.each do |unique_result_hash|
-          term = unique_result_hash.keys[0]
-          mrh_copy[term] = unique_result_hash.values
-        end        
-      end      
-    end
+        unique_results_array << unique_result_hash    
+      end        
+      
+      mrh_copy[subterm] = []
+      unique_results_array.each do |unique_result_hash|        
+        mrh_copy[subterm] << unique_result_hash[subterm]
+      end
+    end        
 
-    binding.pry
     return mrh_copy
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   def self.unique_place(subterm, subresults, id_values)
     temp_results_hash = {}    
@@ -168,10 +150,13 @@ class YelpSearch
     return temp_results_hash    
   end
 
-  def self.set_ids(main_results_hash, index)
-    id_values = Set.new
+  def self.set_ids(main_results_hash, index)    
+    id_values = Set.new    
+    
     main_results_hash.each do |term, results|
-      id_values << results[index]["id"]
+      if results[index] != nil
+        id_values << results[index]["id"]
+      end
     end
 
     return id_values
@@ -202,9 +187,10 @@ class YelpSearch
   
   def self.parse_request(response)
     parsed_response = JSON.parse(response.body)
-    begin
+    
+    if parsed_response["businesses"]
       return parsed_response["businesses"]
-    rescue
+    else
       return nil
     end
   end
