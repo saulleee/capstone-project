@@ -1,20 +1,41 @@
+/* navbar styling */
+
+.navbar {
+  overflow: hidden;
+  background-color: #fff;
+  margin: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a{
+  text-decoration: none;
+}
+
 /* logo styling (upper left) */
 #logo-navbar a {
   font-size: 35px;
   font-weight: bolder;
   color: #000;
-}
+  margin-left: 25px;
+}  
 
 #icon{
   font-size: 30px;
   margin: -10px 0px 0px -5px;
   color: rgb(255, 0, 0);
-}
+}  
 
 /* navbar styling (upper right) */
 
 #profile-pic-nav-bar {
   border-radius: 50%; 
+}  
+
+.sign-in-div {
+  display: flex;
+  align-items: center;
 }
 
 .sign-in {
@@ -22,34 +43,20 @@
   width: auto;
   height: 36px;
   padding: 0px 20px 0px 20px;
-  margin: 0px 0px 25px 0px;
+  margin-right: 25px;
   border-radius: 6px;
   border: 1px solid #efefef;
   background-color: red;
-}
+}  
 
 .sign-in a {
   color: white;
   font-weight: bold;
-}
+}  
 
 .sign-in:hover {
   background-color: rgb(220, 0, 0);
-}
-
-/* navbar styling */
-
-.navbar {
-  overflow: hidden;
-  background-color: #fff;
-  margin: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.navbar a{
-  text-decoration: none;
-}
+}  
 
 /* dropdown styling */
 
