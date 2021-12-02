@@ -82,7 +82,7 @@ const TripsIndexContainer = (props) => {
         {favorited}
       </div> */}
       <div className="trip-search-results">
-        { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
+        { loading ? <i className="fas fa-spinner fa-spin" id="search-spinner"></i> : tripTiles }
       </div>
     </div>
   );

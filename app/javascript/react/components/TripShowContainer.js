@@ -4,6 +4,7 @@ import Favorite from "./Favorite";
 
 const TripShowContainer = (props) => {
   const [favorited, setFavorited] = useState('');
+  const [error, setError] = useState('');
 
   const tripId = props.match.params.id;
   const trips = props.location.state.trips;
@@ -24,14 +25,20 @@ const TripShowContainer = (props) => {
   });
   
   return (
-    <div className="show-container-parent">
-      {favorited}
-      <Favorite 
-        trip={trip} 
-        handleFavoritedState={handleFavoritedState}
-      />
-      {pointDescription}
-    </div>
+    <>
+      <div className="pop-up-messages">
+        {error}
+        {favorited}
+      </div>
+      <div className="show-container-parent">
+        <Favorite 
+          trip={trip} 
+          handleFavoritedState={handleFavoritedState}
+          setError={setError}
+        />
+        {pointDescription}
+      </div>
+    </>
   );
 }
 
