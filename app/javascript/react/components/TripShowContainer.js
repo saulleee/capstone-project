@@ -9,7 +9,6 @@ const TripShowContainer = (props) => {
   const trip = trips.find(t => t.trip.trip_id == tripId);
   const points = trip.trip.points;
 
-  // debugger;
   const pointDescription = points.map((point) => {
     return (
       <TripShow
