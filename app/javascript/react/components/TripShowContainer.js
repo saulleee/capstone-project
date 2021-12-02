@@ -2,10 +2,10 @@ import React from "react";
 import TripShow from "./TripShow";
 
 const TripShowContainer = (props) => {
-  const pointDescription = props.location.state.trip.map((point) => {
+  const pointDescription = props.location.state.trip.points.map((point) => {
     return (
       <TripShow
-        key={point.id}
+        key={point.yelp_id}
         point={point}
       />
     );

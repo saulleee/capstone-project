@@ -1,4 +1,5 @@
 require "securerandom"
+require "set"
 
 class YelpSearch
   API_KEY = ENV["YELP_KEY"]
@@ -6,61 +7,157 @@ class YelpSearch
   SEARCH_PATH = "/v3/businesses/search"
 
   DEFAULT_LIMIT = 1
-  DEFAULT_SORT_BY = ["review_count", "distance", "best_match", "rating"]
+  DEFAULT_SORT_BY = ["rating"]
+  # DEFAULT_SORT_BY = ["review_count", "best_match", "rating"]
 
-  RESPONSE_LIMIT = 2
+  INITIAL_RESPONSE_LIMIT = 2
   
   SUB_RESPONSE_LIMIT = 2
   SUB_RESPONSE_RADIUS = 1000
-  SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
+  SUB_RESPONSE_SORT_BY = ["rating"]
+  # SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
   attr_reader :trips
 
-  def initialize(trips)
+  def initialize(trips, error)
     @trips = trips
+    @error = error
   end
 
   def self.retrieve_results(paramsTerms, paramsLocation)
     terms = terms(paramsTerms)
-    places_array = []
 
-    # the first set of search results
-    response = yelp_request(terms[0], paramsLocation, limit: RESPONSE_LIMIT)
-    parsed_response = parse_request(response)
-    places_array << parsed_response
-    
+    # first set of results
+    initial_response = yelp_request(terms[0], paramsLocation, limit: INITIAL_RESPONSE_LIMIT)
+    initial_parsed_response = parse_request(initial_response)
+
+    # if yelp throws an error or if there just aren't a first set of results
+    if initial_parsed_response.nil?
+      return YelpSearch.new(nil, "Not enough points of interest to create a trip 😔")
+    end
+
+    # set MRH with first set's results
+    main_results_hash = {}
+    main_results_hash[terms[0]] = initial_parsed_response
+
     if terms.length > 1
-      sub_terms = terms.drop(1)
-      sub_terms.each do |term|
-        temp = []
-        parsed_response.each_with_index do |place, index|
-          # location is set just to the FIRST POINT'S location
-          location = place["location"]["display_address"].join(" ")
-          sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
-          
-          array_of_trips = zip(places_array)
-          array_of_places = parse_request(sub_response)
-                    
-          # returns each trip with unique points compared to its SPECIFIC trip
-          array_of_places.each do |place|
-            id_exists_bool = array_of_trips[index].any? { |point| point["id"] == place["id"] }
-            
-            if id_exists_bool == false
-              temp << place
-              break
-            end
-          end
+      mrh_copy = retrieve_sub_results(terms, main_results_hash)
+      main_results_hash.update(mrh_copy)
+    end
+    
+    trips = create_trips(main_results_hash)
+
+    # if somehow all the trips got wiped out
+    if trips.empty?
+      return YelpSearch.new(nil, "Not enough points of interest to create a trip 😔")
+    end
+
+    # final preparations of the trips to send to front end
+    updated_trips_with_keys = update_keys(trips)
+    main_trips = trip_id_generator(updated_trips_with_keys)
+    
+    return YelpSearch.new(main_trips, nil)
+  end
+
+  def self.create_trips(main_results_hash)
+    mrh = main_results_hash
+    number_of_places = mrh.values[0].length
+
+    trips = []
+    i = 0
+
+    while i < number_of_places
+      temp = []
+
+      mrh.each do |term, results|             
+        if results[i] == nil
+          temp = []
+          break
         end
-        
-        places_array << temp
+
+        temp << results[i]
+      end
+
+      i += 1
+      
+      if !temp.empty?
+        trips << temp
       end
     end
 
-    trips = zip(places_array)
-    trips_with_ids = trip_id_generator(trips)
-    YelpSearch.new(trips_with_ids)
+    return trips
   end
-  
+
+  def self.retrieve_sub_results(terms, main_results_hash)
+    subterms = terms.drop(1)
+    unique_results_array = []
+    inital_results = main_results_hash.values[0]
+    mrh_copy = main_results_hash
+
+    subterms.each do |subterm|
+      unique_results_array = []
+
+      inital_results.each_with_index do |place, i|
+        initial_location = place["location"]["display_address"].join(" ")        
+        
+        # results for the current term based on the location of the first place of current index
+        subresponse = yelp_request(subterm, initial_location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY.sample)
+        subresults = parse_request(subresponse)        
+        
+        # create IDs in a set of each place of current index of each result
+        id_values = set_ids(main_results_hash, i) 
+        
+        # add each unique place (or an empty place if none found) to main_results_hash at main_results_hash[term]
+        # by comparing subresults and id_values
+        unique_result_hash = unique_place(subterm, subresults, id_values)
+        unique_results_array << unique_result_hash    
+      end        
+      
+      mrh_copy[subterm] = []
+      unique_results_array.each do |unique_result_hash|        
+        mrh_copy[subterm] << unique_result_hash[subterm]
+      end
+    end        
+
+    return mrh_copy
+  end
+
+  def self.unique_place(subterm, subresults, id_values)
+    temp_results_hash = {}    
+
+    subresults.each do |place|
+      if !id_values.include?(place["id"])
+        temp_results_hash[subterm] = place        
+        break
+      end
+      temp_results_hash[subterm] =  nil
+    end
+    
+    return temp_results_hash    
+  end
+
+  def self.set_ids(main_results_hash, index)    
+    id_values = Set.new    
+    
+    main_results_hash.each do |term, results|
+      if results[index] != nil
+        id_values << results[index]["id"]
+      end
+    end
+
+    return id_values
+  end
+
+  def self.trip_id_generator(trips)
+    trips_with_ids = []
+    
+    trips.each do |i|
+      trips_with_ids << { trip: { trip_id: SecureRandom.hex, points: i } }
+    end
+    
+    return trips_with_ids
+  end
+
   def self.yelp_request(term, location, limit: DEFAULT_LIMIT, radius: nil, sort_by: DEFAULT_SORT_BY.sample)    
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
@@ -71,36 +168,40 @@ class YelpSearch
       sort_by: sort_by
     }
     response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+    return response
   end
   
   def self.parse_request(response)
     parsed_response = JSON.parse(response.body)
-    return parsed_response["businesses"]
-  end
-  
-  def self.zip(places_array)
-    trips = []
     
-    if places_array.length > 1
-      sub_arrays = places_array.drop(1)
-      trips = places_array[0].zip(*sub_arrays)
+    if parsed_response["businesses"]
+      return parsed_response["businesses"]
     else
-      places_array[0].each do |place|
-        trips << [place]
+      return nil
+    end
+  end
+
+  def self.update_keys(trips)
+    updated_trips = trips.map do |trip|
+      trip.each do |place|
+        rename_key(place, "id", "yelp_id")
+        delete_key(place, "alias", "is_closed", "coordinates", "transactions", "phone", "display_phone", "distance")
+        place
       end
     end
     
-    trips
+    return updated_trips
   end
-  
-  def self.trip_id_generator(trips)
-    trips_with_ids = []
-    
-    trips.each do |i|
-      trips_with_ids << { id: SecureRandom.hex, trip: i }
+
+  def self.rename_key(obj, old_key, new_key)
+    obj[new_key] = obj[old_key]
+    obj.delete(old_key)
+  end
+
+  def self.delete_key(obj, *old_key)
+    old_key.each do |key|
+      obj.delete(key)
     end
-    
-    trips_with_ids
   end
 
   def self.terms(bools)
@@ -120,10 +221,7 @@ class YelpSearch
     if !bools.any?(true)
       terms = [
         "cafe",
-        "attractions",
-        "dinner",
-        "dessert",
-        "bar",
+        "attractions"
       ]
     else 
       bools.each_with_index do |bool, index|
@@ -133,107 +231,6 @@ class YelpSearch
       end
     end
 
-    terms
+    return terms
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-############################### ADD THIS CODE UNDER LINE 30 ###############################
-
-# if terms.length > 1
-#   sub_terms = terms.drop(1)
-#   sub_terms.each do |term|
-#     temp = []
-#     parsed_response.each_with_index do |place, index|
-#       # location is set just to the FIRST POINT'S location
-#       location = place["location"]["display_address"].join(" ")
-#       sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY)
-      
-#       array_of_trips = zip(places_array)
-#       array_of_places = parse_request(sub_response)
-                
-#       # returns each trip with unique points compared to its SPECIFIC trip
-#       array_of_places.each do |place|
-#         id_exists_bool = array_of_trips[index].any? { |point| point["id"] == place["id"] }
-        
-#         if id_exists_bool == false
-#           temp << place
-#           break
-#         end
-#       end
-#     end
-    
-#     places_array << temp
-#   end
-# end
-    
-# different version with different logic
-# if terms.length > 1
-#   sub_terms = terms.drop(1)
-#   sub_terms.each_with_index do |term, index|
-#     temp = []
-#     places_array[index].each do |place|
-#       # location is set to the PREVIOUS POINT'S location
-#       location = place["location"]["display_address"].join(" ")
-      
-#       sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY)
-
-#       array_of_places = parse_request(sub_response)
-      
-#       # returns each trip with unique points compared to ALL trips
-#       # bug though, when search_limit gets to ~5
-#       array_of_places.each do |place|
-#         id_exists_counter = 0
-#         places_array.each do |b|
-#           id_exists_bool = b.any? { |c| c["id"] == a["id"] }
-#           if id_exists_bool == true
-#             id_exists_counter += 1
-#           end
-#         end
-#         if id_exists_counter == 0
-#           temp << place
-#           break
-#         end
-#       end
-#     end
-    
-#     places_array << temp
-#   end
-# end
-
-# v2 of above
-# if terms.length > 1
-#   sub_terms = terms.drop(1)
-#   sub_terms.each do |term|
-#     temp = []
-#     places_array.last.each do |place|
-#       # location is set to the PREVIOUS POINT'S location
-#       location = place["location"]["display_address"].join(" ")
-      
-#       sub_response = yelp_request(term, location, limit: SUB_RESPONSE_LIMIT, radius: SUB_RESPONSE_RADIUS, sort_by: SUB_RESPONSE_SORT_BY)
-
-#       array_of_places = parse_request(sub_response)
-
-#       # returns each trip with unique points compared to ALL trips
-#       array_of_places.each do |a|
-#         places_array.each do |b|
-#           id_exists_bool = b.any? { |c| c["id"] == a["id"] }
-#           if id_exists_bool == false 
-#             temp << a
-#           end
-#         end
-#       end
-#     end
-    
-#     places_array << temp
-#   end
-# end
