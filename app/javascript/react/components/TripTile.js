@@ -1,14 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Favorite from "./Favorite";
+import history from "./history";
 
-const TripTile = (props) => {  
+const TripTile = (props) => {
   const pointDescription = props.trip.points.map((point) => {
-    // const categories = point.categories.map((category) => {
-    //   return category.title;
-    // });
-
-    // Categories: {categories.join(", ")} | 
+    const categories = point.categories.map((category) => {
+      return category.title;
+    });
     
     return (
       <li key={point.yelp_id}>
@@ -17,24 +14,15 @@ const TripTile = (props) => {
     )
   });
   
+  const handleClick = () => {
+    history.push(`/trips/${props.trip.trip_id}`, { trips: props.trips });
+  }
+
   return (
-    <div className="trip-tile">
-      <Favorite 
-        trip={props} 
-        // error={props.error}
-        // setError={props.setError}
-        handleFavoritedState={props.handleFavoritedState}
-      />
-      <Link 
-        to={{
-          pathname: `/trips/${props.trip.trip_id}`,
-          state: props
-        }}
-      >
-        <ol>
-          {pointDescription}
-        </ol>
-      </Link>
+    <div className="trip-tile" onClick={handleClick}>
+      <ol>
+        {pointDescription}
+      </ol>
     </div>
   );
 }

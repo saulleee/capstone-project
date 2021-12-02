@@ -20,7 +20,7 @@ const Favorite = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      props.handleFavoritedState(responseBody.message);
+      // props.handleFavoritedState(responseBody.message);
     } catch (e) {
       // setError([...error, "Please log in"]);
       console.error(`Error in Fetch: ${e.message}`);
@@ -33,9 +33,9 @@ const Favorite = (props) => {
   }
 
   return (
-    <div>
+    <div className="favorite-parent-div">
       <form onSubmit={onSubmitHandler}>
-        <input type='submit' className="favorite-button" value='🥰' />
+        <input type='submit' className="favorite-button" value="🥰 " />Favorite
       </form>
     </div>
   );

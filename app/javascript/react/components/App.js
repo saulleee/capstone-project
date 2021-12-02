@@ -1,17 +1,19 @@
 import React from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, Router } from "react-router-dom";
+import history from "./history";
 import TripsIndexContainer from "./TripsIndexContainer";
 import TripShowContainer from "./TripShowContainer";
 
 const App = () => {
   return (
   <div>
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route exact path="/" component={TripsIndexContainer} />
+        <Route exact path="/trips" component={TripsIndexContainer} />
         <Route exact path="/trips/:id" component={TripShowContainer} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   </div>
   );
 }

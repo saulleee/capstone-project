@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { terms } from "./utilities/terms";
 import { Checklist } from "./Checklist";
 import SearchBar from "./SearchBar";
 
 const TripSearchContainer = (props) => {
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(props.searchQuery.replace("?q=", ""));
   const [isChecked, setIsChecked] = useState(
     new Array(terms.length).fill(false)
   );

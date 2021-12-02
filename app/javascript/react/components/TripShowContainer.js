@@ -1,8 +1,16 @@
 import React from "react";
 import TripShow from "./TripShow";
+import Favorite from "./Favorite";
 
 const TripShowContainer = (props) => {
-  const pointDescription = props.location.state.trip.points.map((point) => {
+  
+  const tripId = props.match.params.id;
+  const trips = props.location.state.trips;
+  
+  const trip = trips.find(t => t.trip.trip_id == tripId);
+  const points = trip.trip.points;
+
+  const pointDescription = points.map((point) => {
     return (
       <TripShow
         key={point.yelp_id}
@@ -12,7 +20,10 @@ const TripShowContainer = (props) => {
   });
   
   return (
-    pointDescription
+    <div>
+      <Favorite trip={trip} />
+      {pointDescription}
+    </div>
   );
 }
 

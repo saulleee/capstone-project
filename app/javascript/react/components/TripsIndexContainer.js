@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
-import ErrorContainer from "./ErrorContainer";
+import history from "./history";
+import { useLocation } from "react-router-dom";
+// import ErrorContainer from "./ErrorContainer";
 
 const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [favorited, setFavorited] = useState('');
+  // const [favorited, setFavorited] = useState('');
+  const { search } = useLocation()
 
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -27,31 +30,42 @@ const TripsIndexContainer = (props) => {
       }
       const responseBody = await response.json();
       if (responseBody.error) {
-        setError(responseBody.error)
+        setError(responseBody.error);
+        setTrips([]);
       } else {
-        setTrips(responseBody.trips)
+        setTrips(responseBody.trips);
       }
+      history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
+      // history.push({pathname: "/trips", search: `query=${searchPayload.location}&checks=${searchPayload.}` }, { trips: responseBody.trips });
       setLoading(false);
     } catch (e) {
-      setError([...error, "Please search a location"]);
+      setError("Please search a location");
       setTrips([]);
       setLoading(false);
       console.error(`Error in Fetch: ${e.message}`);
     }
   }
 
-  const handleFavoritedState = (favorited_trip) => {
-    setFavorited(favorited_trip);
-  }
+  useEffect(() => {
+    if (history.location.state?.trips.length > 0) {
+      setTrips(history.location.state.trips);
+    }
+  }, []);
+
+  // const handleFavoritedState = (favorited_trip) => {
+  //   setFavorited(favorited_trip);
+  // }
   
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
         key={trip.trip.trip_id}
         trip={trip.trip}
+        trips={trips}
         // error={error}
         // setError={setError}
-        handleFavoritedState={handleFavoritedState}
+        // setFavorited={setFavorited}
+        // handleFavoritedState={handleFavoritedState}
       />
     );
   });
@@ -61,16 +75,20 @@ const TripsIndexContainer = (props) => {
       <div className="trip-search-container">
         <TripSearchContainer 
           newSearch={newSearch} 
+          searchQuery={search}
           // error={error}
           // setError={setError}
         />
       </div>
+      <div className="error-messages">
+        {error}
+      </div>
       {/* <div className="error-messages">
         <ErrorContainer error={error} />
       </div> */}
-      <div>
-        {error}
-      </div>
+      {/* <div>
+        {favorited}
+      </div> */}
       <div className="trip-search-results">
         { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
       </div>
