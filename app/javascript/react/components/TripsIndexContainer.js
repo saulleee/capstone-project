@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
 import history from "./history";
+import { useLocation } from "react-router-dom";
 // import ErrorContainer from "./ErrorContainer";
 
 const TripsIndexContainer = (props) => {
@@ -9,6 +10,7 @@ const TripsIndexContainer = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   // const [favorited, setFavorited] = useState('');
+  const { search } = useLocation()
 
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -33,7 +35,8 @@ const TripsIndexContainer = (props) => {
       } else {
         setTrips(responseBody.trips);
       }
-      history.push("/trips", { trips: responseBody.trips });
+      history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
+      // history.push({pathname: "/trips", search: `query=${searchPayload.location}&checks=${searchPayload.}` }, { trips: responseBody.trips });
       setLoading(false);
     } catch (e) {
       setError("Please search a location");
@@ -72,6 +75,7 @@ const TripsIndexContainer = (props) => {
       <div className="trip-search-container">
         <TripSearchContainer 
           newSearch={newSearch} 
+          searchQuery={search}
           // error={error}
           // setError={setError}
         />
