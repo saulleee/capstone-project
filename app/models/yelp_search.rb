@@ -65,23 +65,6 @@ class YelpSearch
 
     trips = []
     i = 0
-    
-    # while i < number_of_places
-    #   catch (:not_an_array) do
-    #     temp = []
-
-    #     mrh.each do |term, results|             
-    #       if results[i] != nil          
-    #         temp << results[i]
-    #       else
-    #         i += 1
-    #         throw :not_an_array
-    #       end
-    #     end      
-    #     i += 1
-    #     trips << temp
-    #   end
-    # end
 
     while i < number_of_places
       temp = []
@@ -91,9 +74,12 @@ class YelpSearch
           temp = []
           break
         end
+
         temp << results[i]
-      end      
+      end
+
       i += 1
+      
       if !temp.empty?
         trips << temp
       end
