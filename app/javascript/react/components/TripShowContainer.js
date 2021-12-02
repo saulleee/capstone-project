@@ -1,5 +1,6 @@
 import React from "react";
 import TripShow from "./TripShow";
+import Favorite from "./Favorite";
 
 const TripShowContainer = (props) => {
   
@@ -20,6 +21,7 @@ const TripShowContainer = (props) => {
   
   return (
     <div>
+      <Favorite trip={trip} />
       {pointDescription}
     </div>
   );
