@@ -7,7 +7,6 @@ const TripShowContainer = (props) => {
 
   const tripId = props.match.params.id;
   const trips = props.location.state.trips;
-  
   const trip = trips.find(t => t.trip.trip_id == tripId);
   const points = trip.trip.points;
 

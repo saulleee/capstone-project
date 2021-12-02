@@ -20,7 +20,6 @@ const Favorite = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      debugger;
       props.handleFavoritedState(responseBody.message);
     } catch (e) {
       // setError([...error, "Please log in"]);
