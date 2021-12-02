@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { terms } from "./utilities/terms";
-import { Checklist } from "./Checklist";
+// import { Checklist } from "./Checklist";
+
+import { default as ReactSelect } from "react-select";
+import { components } from "react-select";
+
+
 
 const TripSearchContainer = (props) => {
   const [location, setLocation] = useState('');
-  const [isChecked, setIsChecked] = useState(
-    new Array(terms.length).fill(false)
-  );
+  // const [isChecked, setIsChecked] = useState(
+  //   new Array(terms.length).fill(false)
+  // );
 
-  const handleOnChangeCheck = (position) => {
-    const updatedIsChecked = isChecked.map((item, index) =>
-      index === position ? !item : item
-    );
+  // const handleOnChangeCheck = (position) => {
+  //   const updatedIsChecked = isChecked.map((item, index) =>
+  //     index === position ? !item : item
+  //   );
 
-    setIsChecked(updatedIsChecked);
-  }
+  //   setIsChecked(updatedIsChecked);
+  // }
+  const [optionSelected, setOptionSelected] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,17 +31,56 @@ const TripSearchContainer = (props) => {
     props.newSearch(submissionPost);
   }
 
-  const checklist = terms.map((term, index) => {
+  // const checklist = terms.map((term, index) => {
+  //   return (
+  //     <Checklist 
+  //       key={index}
+  //       term={term}
+  //       index={index}
+  //       isChecked={isChecked}
+  //       handleOnChangeCheck={handleOnChangeCheck}
+  //     />
+  //   );
+  // });
+
+
+
+
+
+  const Option = (props) => {
     return (
-      <Checklist 
-        key={index}
-        term={term}
-        index={index}
-        isChecked={isChecked}
-        handleOnChangeCheck={handleOnChangeCheck}
-      />
+      <div>
+        <components.Option {...props}>
+          <input
+            type="checkbox"
+            checked={props.isSelected}
+            onChange={() => null}
+          />{" "}
+          <label>{props.label}</label>
+        </components.Option>
+      </div>
     );
-  });
+  };
+
+  const handleChange = (selected) => {
+    setOptionSelected(selected);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div>
@@ -51,9 +96,26 @@ const TripSearchContainer = (props) => {
             <input id="search-container-input" type='text' autoFocus="on" name='location' placeholder="Boston" value={location} onChange={(e)=>setLocation(e.target.value)} />
           </div>
 
-          <div className="checklist-container">
+          {/* <div className="checklist-container">
             {checklist}
-          </div>
+          </div> */}
+
+
+          <ReactSelect
+            options={terms}
+            isMulti
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            components={{
+              Option
+            }}
+            onChange={handleChange}
+            allowSelectAll={true}
+            value={optionSelected}
+          />
+
+
+
           
           <input className="search-button" type='submit' value='Search' />
         </div>
