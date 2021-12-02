@@ -35,7 +35,7 @@ const TripsIndexContainer = (props) => {
       history.push("/trips", { trips: responseBody.trips });
       setLoading(false);
     } catch (e) {
-      setError("Please search a location");
+      setError("Something went wrong");
       setTrips([]);
       setLoading(false);
       console.error(`Error in Fetch: ${e.message}`);

@@ -2,8 +2,7 @@ import React from "react";
 
 const Favorite = (props) => {
   const trip = props.trip;
-  // const error = props.error;
-  // const setError = props.setError;
+  const setError = props.setError;
 
   const newFavorite = async (trip) => {
     try {
@@ -22,7 +21,7 @@ const Favorite = (props) => {
       const responseBody = await response.json();
       props.handleFavoritedState(responseBody.message);
     } catch (e) {
-      // setError([...error, "Please log in"]);
+      setError("Please log in");
       console.error(`Error in Fetch: ${e.message}`);
     }
   }
