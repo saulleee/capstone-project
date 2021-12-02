@@ -18,11 +18,23 @@
 }
 
 .sign-in {
-  padding: 10px 0px 0px 0px;
+  border-width: 0px;
+  width: auto;
+  height: 36px;
+  padding: 0px 20px 0px 20px;
+  margin: 0px 0px 25px 0px;
+  border-radius: 6px;
+  border: 1px solid #efefef;
+  background-color: red;
 }
 
-.sign-in a:hover {
-  text-decoration: underline;
+.sign-in a {
+  color: white;
+  font-weight: bold;
+}
+
+.sign-in:hover {
+  background-color: rgb(220, 0, 0);
 }
 
 /* navbar styling */
