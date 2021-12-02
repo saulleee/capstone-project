@@ -8,7 +8,7 @@ const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [favorited, setFavorited] = useState('');
+  // const [favorited, setFavorited] = useState('');
 
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -27,8 +27,13 @@ const TripsIndexContainer = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      setTrips(responseBody);
-      history.push("/trips", { trips: responseBody });
+      if (responseBody.error) {
+        setError(responseBody.error);
+        setTrips([]);
+      } else {
+        setTrips(responseBody.trips);
+      }
+      history.push("/trips", { trips: responseBody.trips });
       setLoading(false);
     } catch (e) {
       setError("Please search a location");
@@ -45,9 +50,9 @@ const TripsIndexContainer = (props) => {
     }
   }, []);
 
-  const handleFavoritedState = (favorited_trip) => {
-    setFavorited(favorited_trip);
-  }
+  // const handleFavoritedState = (favorited_trip) => {
+  //   setFavorited(favorited_trip);
+  // }
   
   const tripTiles = trips.map((trip) => {
     return (
@@ -58,9 +63,7 @@ const TripsIndexContainer = (props) => {
         // error={error}
         // setError={setError}
         // setFavorited={setFavorited}
-        // error={error}
-        // setError={setError}
-        handleFavoritedState={handleFavoritedState}
+        // handleFavoritedState={handleFavoritedState}
       />
     );
   });

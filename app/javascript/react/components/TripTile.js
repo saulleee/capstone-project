@@ -2,7 +2,7 @@ import React from "react";
 import history from "./history";
 
 const TripTile = (props) => {
-  const pointDescription = props.trip.map((point) => {
+  const pointDescription = props.trip.points.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
@@ -15,7 +15,7 @@ const TripTile = (props) => {
   });
   
   const handleClick = () => {
-    history.push(`/trips/${props.id}`, { trips: props.trips });
+    history.push(`/trips/${props.trip.trip_id}`, { trips: props.trips });
   }
 
   return (

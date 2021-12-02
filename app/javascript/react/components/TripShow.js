@@ -2,13 +2,13 @@ import React from "react";
 
 const TripShow = (props) => {
   const point = props.point;
-  // const categories = point.categories.map((category) => {
-  //   return category.title;
-  // });
+  const categories = point.categories.map((category) => {
+    return category.title;
+  });
 
-  // <li>
-  //   Categories: {categories.join(", ")}
-  // </li>
+  <li>
+    Categories: {categories.join(", ")}
+  </li>
 
   return (
     <div>
