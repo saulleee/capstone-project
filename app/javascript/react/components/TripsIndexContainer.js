@@ -44,9 +44,8 @@ const TripsIndexContainer = (props) => {
   }
 
   useEffect(() => {
-    if (history.state?.state.trips.length > 0) {
-      setTrips([]);
-      setTrips(history.state.state.trips);
+    if (history.location.state?.trips.length > 0) {
+      setTrips(history.location.state.trips);
     }
   }, []);
 
