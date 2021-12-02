@@ -8,10 +8,10 @@ const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  // const [favorited, setFavorited] = useState('');
+  const [favorited, setFavorited] = useState('');
 
   const newSearch = async (searchPayload) => {
-    setError('');
+    setError([]);
     setLoading(true);
     try {
       const response = await fetch("/api/v1/yelp/search", {
@@ -45,16 +45,22 @@ const TripsIndexContainer = (props) => {
     }
   }, []);
 
+  const handleFavoritedState = (favorited_trip) => {
+    setFavorited(favorited_trip);
+  }
+  
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
-        key={trip.id}
-        id={trip.id}
+        key={trip.trip.trip_id}
         trip={trip.trip}
         trips={trips}
         // error={error}
         // setError={setError}
         // setFavorited={setFavorited}
+        // error={error}
+        // setError={setError}
+        handleFavoritedState={handleFavoritedState}
       />
     );
   });
@@ -68,7 +74,9 @@ const TripsIndexContainer = (props) => {
           // setError={setError}
         />
       </div>
-      {error}
+      <div className="error-messages">
+        {error}
+      </div>
       {/* <div className="error-messages">
         <ErrorContainer error={error} />
       </div> */}

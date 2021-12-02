@@ -2,9 +2,13 @@ import React from "react";
 
 const TripShow = (props) => {
   const point = props.point;
-  const categories = point.categories.map((category) => {
-    return category.title;
-  });
+  // const categories = point.categories.map((category) => {
+  //   return category.title;
+  // });
+
+  // <li>
+  //   Categories: {categories.join(", ")}
+  // </li>
 
   return (
     <div>
@@ -12,9 +16,6 @@ const TripShow = (props) => {
       <ul>
         <li>
           Name: <a href={point.url} target="_blank">{point.name}</a>
-        </li>
-        <li>
-          Categories: {categories.join(", ")}
         </li>
         <li>
           Rating: {point.rating} | Reviews: {point.review_count}

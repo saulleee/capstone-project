@@ -10,10 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_20_145137) do
+ActiveRecord::Schema.define(version: 2021_11_27_184649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorite_trips", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "trip_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trip_id"], name: "index_favorite_trips_on_trip_id"
+    t.index ["user_id"], name: "index_favorite_trips_on_user_id"
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.jsonb "categories", null: false
+    t.string "yelp_id", null: false
+    t.string "image_url", null: false
+    t.jsonb "location", null: false
+    t.string "name", null: false
+    t.string "price", null: false
+    t.integer "rating", null: false
+    t.integer "review_count", null: false
+    t.string "url", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "points", force: :cascade do |t|
+    t.bigint "trip_id", null: false
+    t.bigint "place_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["place_id"], name: "index_points_on_place_id"
+    t.index ["trip_id"], name: "index_points_on_trip_id"
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string "trip_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

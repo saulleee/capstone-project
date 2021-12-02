@@ -8,8 +8,8 @@ const TripTile = (props) => {
     });
     
     return (
-      <li key={point.id}>
-        Name: {point.name} | Categories: {categories.join(", ")} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
+      <li key={point.yelp_id}>
+        Name: {point.name} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
       </li>
     )
   });
