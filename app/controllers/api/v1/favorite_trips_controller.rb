@@ -8,7 +8,7 @@ class Api::V1::FavoriteTripsController < ApplicationController
       render json: { message: "Successfully unfavorited" }
     else
       trip = Trip.new(trip_params)
-
+      
       points_params[:points].each do |point|
         if Place.find_by(yelp_id: point[:yelp_id])
           trip.places << Place.find_by(yelp_id: point[:yelp_id])
@@ -16,12 +16,10 @@ class Api::V1::FavoriteTripsController < ApplicationController
           temp = Place.new(point)
           if temp.save
             trip.places << temp
-          else
-            render json: { message: "Something went wrong" }
           end
         end
       end
-
+      
       if trip.save
         current_user.trips << trip
         render json: { message: "Sucessfully favorited" }
