@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root "homes#index"
 
   get '/', to: "homes#index"
+  get '/trips', to: "homes#index"
   get "/trips/:id", to: "homes#index"
   get "/about", to: "about#index"
 

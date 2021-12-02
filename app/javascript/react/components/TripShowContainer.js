@@ -1,9 +1,13 @@
 import React from "react";
-import history from "./history";
 import TripShow from "./TripShow";
 
 const TripShowContainer = (props) => {
-  const pointDescription = props.location.state.trip.map((point) => {
+  const tripId = props.match.params.id;
+  const trips = props.location.state.trips;
+
+  const trip = trips.find(t => t.id == tripId);
+  
+  const pointDescription = trip.trip.map((point) => {
     return (
       <TripShow
         key={point.id}
@@ -11,12 +15,9 @@ const TripShowContainer = (props) => {
       />
     );
   });
-
-  console.log(history);
-
+  
   return (
     <div>
-      <button onClick={history.goBack}>Back</button>
       {pointDescription}
     </div>
   );

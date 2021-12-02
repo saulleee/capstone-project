@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import history from "./history";
 
 const TripTile = (props) => {
-  const [points, setPoints] = useState([]);
-
   const pointDescription = props.trip.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
@@ -16,22 +14,15 @@ const TripTile = (props) => {
     )
   });
   
-  useEffect(() => {
-    setPoints(props);
-  }, []);
+  const handleClick = () => {
+    history.push(`/trips/${props.id}`, { trips: props.trips });
+  }
 
   return (
-    <div className="trip-tile">
-      <Link 
-        to={{
-          pathname: `/trips/${props.id}`,
-          state: points
-        }}
-      >
-        <ol>
-          {pointDescription}
-        </ol>
-      </Link>
+    <div className="trip-tile" onClick={handleClick}>
+      <ol>
+        {pointDescription}
+      </ol>
     </div>
   );
 }
