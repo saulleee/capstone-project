@@ -6,7 +6,7 @@ import { components } from "react-select";
 // import { customStyles } from "./utilities/customStyles";
 
 const TripSearchContainer = (props) => {
-  const [location, setLocation] = useState(props.searchQuery.replace("?q=", ""));
+  const [location, setLocation] = useState(props.searchQuery.replace("?q=", '').replace("%20", ' '));
   const [optionSelected, setOptionSelected] = useState(null);
 
   const handleSubmit = (event) => {
