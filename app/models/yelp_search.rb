@@ -7,15 +7,13 @@ class YelpSearch
   SEARCH_PATH = "/v3/businesses/search"
 
   DEFAULT_LIMIT = 1
-  DEFAULT_SORT_BY = ["rating"]
-  # DEFAULT_SORT_BY = ["review_count", "best_match", "rating"]
+  DEFAULT_SORT_BY = ["review_count", "best_match", "rating"]
 
   INITIAL_RESPONSE_LIMIT = 4
   
   SUB_RESPONSE_LIMIT = 3
   SUB_RESPONSE_RADIUS = 1000
-  SUB_RESPONSE_SORT_BY = ["rating"]
-  # SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
+  SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
   attr_reader :trips
 
