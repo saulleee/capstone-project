@@ -1,11 +1,12 @@
 export const terms = [
-  { value: "breakfast", label: "Breakfast" },
-  { value: "brunch", label: "Brunch" },
-  { value: "lunch", label: "Lunch" },
-  { value: "cafes", label: "Cafes" },
-  { value: "attractions", label: "Attractions" },
-  { value: "dinner", label: "Dinner" },
-  { value: "dessert", label: "Dessert" },
-  { value: "bars", label: "Bars" },
-  { value: "nightlife", label: "Nightlife" }
+  { value: "attractions", label: "attractions" },
+  { value: "bars", label: "bars" },
+  { value: "breakfast", label: "breakfast" },
+  { value: "brunch", label: "brunch" },
+  { value: "cafes", label: "cafes" },
+  { value: "dessert", label: "dessert" },
+  { value: "dinner", label: "dinner" },
+  { value: "lunch", label: "lunch" },
+  { value: "parks", label: "parks" },
+  { value: "nightlife", label: "nightlife" }
 ];
