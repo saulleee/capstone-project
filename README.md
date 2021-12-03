@@ -8,7 +8,7 @@ Check out the app here:
 
 [https://triplyapp.herokuapp.com/](https://triplyapp.herokuapp.com/)
 
-## Set Up and Usage
+### Set Up and Usage
 1. install gems and packages 
    
    `bundle && yarn`
