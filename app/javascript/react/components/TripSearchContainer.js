@@ -58,7 +58,7 @@ const TripSearchContainer = (props) => {
               onChange={handleChange}
               allowSelectAll={true}
               value={optionSelected}
-              placeholder={"select your points of interest"}
+              placeholder={"points of interest"}
               // styles={customStyles}
             />
           </div>
