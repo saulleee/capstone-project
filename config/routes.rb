@@ -8,8 +8,11 @@ Rails.application.routes.draw do
   get '/trips', to: "homes#index"
   get "/trips/:id", to: "homes#index"
   get "/about", to: "about#index"
+  # get "/users/:id" to: "homes#index"
 
-  resources :trips, only: [:create]
+  resources :trips do
+    resources :favorite_trips 
+  end
 
   namespace :api do
     namespace :v1 do
