@@ -8,7 +8,7 @@
   padding: 150px 0px 25px 0px;
 }
 
-/* search bar styling */
+/* search bar */
 
 .search-bar {
   display: flex;
@@ -51,7 +51,7 @@ input:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
-/* search button styling */
+/* search button */
 
 .search-button {
   border-width: 0px;
@@ -68,4 +68,11 @@ input:-webkit-autofill:active{
 
 .search-button:hover {
   background-color: rgb(220, 0, 0);
+}
+
+/* checklist */
+
+.react-select {
+  width: 635px;
+  margin-bottom: 25px;
 }

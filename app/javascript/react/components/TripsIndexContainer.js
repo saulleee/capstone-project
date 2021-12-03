@@ -9,7 +9,7 @@ const TripsIndexContainer = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { search } = useLocation()
-
+  
   const newSearch = async (searchPayload) => {
     setError([]);
     setLoading(true);
@@ -33,9 +33,9 @@ const TripsIndexContainer = (props) => {
       } else {
         setTrips(responseBody.trips);
         history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
+        // history.push({pathname: "/trips", search: `q=${searchPayload.location}&terms=${searchPayload.terms.each(term => term.value)}`}, { trips: responseBody.trips });
+        // Uncaught TypeError: searchPayload.terms.each is not a function at eval      setLoading(false);
       }
-      // history.push({pathname: "/trips", search: `query=${searchPayload.location}&checks=${searchPayload.}` }, { trips: responseBody.trips });
-      setLoading(false);
     } catch (e) {
       setError("Something went wrong");
       setTrips([]);
