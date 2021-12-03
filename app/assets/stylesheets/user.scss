@@ -1,3 +1,5 @@
+/* log in */
+
 .log-in-page {
   display: flex;
   flex-direction: column;
@@ -20,3 +22,43 @@
 .log-in-page a:hover {
   text-decoration: underline;
 }
+
+/* show */
+
+.user-show-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  margin: 50px;
+  padding: 30px;
+  border-radius: 25px;
+  width: 300px;
+}
+
+.user-container-title {
+
+}
+
+.userprofilepic img {
+  border-radius: 50%;
+}
+
+.favorites-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 25px;
+  width: 500px;
+}
+
+/* edit account */
