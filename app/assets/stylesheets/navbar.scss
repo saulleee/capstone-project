@@ -1,12 +1,13 @@
 /* navbar styling */
 
 .navbar {
-  overflow: hidden;
-  background-color: #fff;
-  margin: 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 25px;
+  margin-top: -10px;
+  overflow: hidden;
+  background-color: #fff;
 }
 
 .navbar a{
