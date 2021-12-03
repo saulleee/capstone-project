@@ -9,7 +9,9 @@ const TripTile = (props) => {
     
     return (
       <li key={point.yelp_id}>
-        Name: {point.name} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
+        <p className="point-name">{point.name}</p>
+        <p className="point-rating">{point.rating} ⭐️ ({point.review_count})</p>
+        <p className="point-categories">Categories: {categories.join(", ")}</p>
       </li>
     )
   });
@@ -17,6 +19,8 @@ const TripTile = (props) => {
   const handleClick = () => {
     history.push(`/trips/${props.trip.trip_id}`, { trips: props.trips });
   }
+
+  const points = props.trip.points;
 
   return (
     <div className="trip-tile" onClick={handleClick}>
