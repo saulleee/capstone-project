@@ -210,24 +210,11 @@ class YelpSearch
     end
   end
 
-  def self.terms(bools)
-    preset_list = [ 
-      "breakfast",
-      "brunch",
-      "lunch",
-      "cafe",
-      "attractions",
-      "dinner",
-      "dessert",
-      "bar",
-      "nightlife"
-    ]
+  def self.terms(paramsTerms)
     terms = []
 
-    bools.each_with_index do |bool, index|
-      if bool === true
-        terms << preset_list[index]
-      end
+    paramsTerms.each do |term|
+      terms << term["value"]
     end
 
     return terms
