@@ -4,11 +4,11 @@ import TripTile from "./TripTile";
 import history from "./history";
 import { useLocation } from "react-router-dom";
 
-const TripsIndexContainer = (props) => {
+const TripsIndexContainer = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { search } = useLocation()
+  const { search } = useLocation();
   
   const newSearch = async (searchPayload) => {
     setError([]);
@@ -34,18 +34,7 @@ const TripsIndexContainer = (props) => {
       } else {
         setTrips(responseBody.trips);
         setLoading(false);
-        // history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
-        history.push({
-          pathname: "/trips", 
-          search: `q=${searchPayload.location}
-                  &terms=${searchPayload.terms.forEach(
-                    term => term.value
-                  )}`
-          }, 
-          { 
-            trips: responseBody.trips 
-          }
-        );
+        history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, {trips: responseBody.trips, terms: searchPayload.terms});
       }
     } catch (e) {
       setError("Something went wrong");
