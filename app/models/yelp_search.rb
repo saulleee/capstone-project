@@ -10,9 +10,9 @@ class YelpSearch
   DEFAULT_SORT_BY = ["rating"]
   # DEFAULT_SORT_BY = ["review_count", "best_match", "rating"]
 
-  INITIAL_RESPONSE_LIMIT = 2
+  INITIAL_RESPONSE_LIMIT = 4
   
-  SUB_RESPONSE_LIMIT = 2
+  SUB_RESPONSE_LIMIT = 3
   SUB_RESPONSE_RADIUS = 1000
   SUB_RESPONSE_SORT_BY = ["rating"]
   # SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
