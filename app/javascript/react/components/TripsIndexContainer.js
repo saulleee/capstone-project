@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
 import history from "./history";
-// import ErrorContainer from "./ErrorContainer";
+import { useLocation } from "react-router-dom";
 
 const TripsIndexContainer = (props) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  // const [favorited, setFavorited] = useState('');
+  const { search } = useLocation()
 
   const newSearch = async (searchPayload) => {
-    setError('');
+    setError([]);
     setLoading(true);
     try {
       const response = await fetch("/api/v1/yelp/search", {
@@ -27,11 +27,17 @@ const TripsIndexContainer = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      setTrips(responseBody);
-      history.push("/trips", { trips: responseBody });
+      if (responseBody.error) {
+        setError(responseBody.error);
+        setTrips([]);
+      } else {
+        setTrips(responseBody.trips);
+        history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
+      }
+      // history.push({pathname: "/trips", search: `query=${searchPayload.location}&checks=${searchPayload.}` }, { trips: responseBody.trips });
       setLoading(false);
     } catch (e) {
-      setError("Please search a location");
+      setError("Something went wrong");
       setTrips([]);
       setLoading(false);
       console.error(`Error in Fetch: ${e.message}`);
@@ -39,44 +45,40 @@ const TripsIndexContainer = (props) => {
   }
 
   useEffect(() => {
-    if (history.state?.state.trips.length > 0) {
-      setTrips([]);
-      setTrips(history.state.state.trips);
+    if (history.location.state?.trips.length > 0) {
+      setTrips(history.location.state.trips);
     }
   }, []);
-
+  
   const tripTiles = trips.map((trip) => {
     return (
       <TripTile
-        key={trip.id}
-        id={trip.id}
+        key={trip.trip.trip_id}
         trip={trip.trip}
         trips={trips}
-        // error={error}
-        // setError={setError}
-        // setFavorited={setFavorited}
       />
     );
   });
 
   return (
     <div>
-      <div className="trip-search-container">
-        <TripSearchContainer 
-          newSearch={newSearch} 
-          // error={error}
-          // setError={setError}
-        />
+      <div className="pop-up-messages">
+        <span className="pop-up-text">{error}</span>
       </div>
-      {error}
-      {/* <div className="error-messages">
-        <ErrorContainer error={error} />
-      </div> */}
-      {/* <div>
-        {favorited}
-      </div> */}
-      <div className="trip-search-results">
-        { loading ? <i className="fas fa-map-pin fa-spin" id="search-spinner"></i> : tripTiles }
+
+      <div className="trips-index-container-parent">
+        <div className="trip-search-container">
+          <TripSearchContainer 
+            newSearch={newSearch} 
+            searchQuery={search}
+            // error={error}
+            // setError={setError}
+          />
+        </div>
+        
+        <div className="trip-search-results">
+          { loading ? <i className="fas fa-spinner fa-spin" id="search-spinner"></i> : tripTiles }
+        </div>
       </div>
     </div>
   );

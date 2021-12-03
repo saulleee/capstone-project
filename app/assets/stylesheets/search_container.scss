@@ -61,8 +61,11 @@ input:-webkit-autofill:active{
   margin: 0px 0px 25px 0px;
   border-radius: 6px;
   border: 1px solid #efefef;
+  background-color: red;
+  color: white;
+  font-weight: bold;
 }
 
 .search-button:hover {
-  border: 1px solid #c6c6c6;
+  background-color: rgb(220, 0, 0);
 }

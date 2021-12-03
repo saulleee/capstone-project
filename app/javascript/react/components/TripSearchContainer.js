@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { terms } from "./utilities/terms";
-// import { Checklist } from "./Checklist";
-
+import { Checklist } from "./Checklist";
+import SearchBar from "./SearchBar";
 import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
 
-
-
 const TripSearchContainer = (props) => {
-  const [location, setLocation] = useState('');
-  // const [isChecked, setIsChecked] = useState(
-  //   new Array(terms.length).fill(false)
-  // );
+  const [location, setLocation] = useState(props.searchQuery.replace("?q=", ""));
+  const [isChecked, setIsChecked] = useState(
+    new Array(terms.length).fill(false)
+  );
+  const error = props.error;
+  const setError = props.setError;
+  const newSearch = props.newSearch;
 
   // const handleOnChangeCheck = (position) => {
   //   const updatedIsChecked = isChecked.map((item, index) =>
@@ -25,11 +26,12 @@ const TripSearchContainer = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let submissionPost = {
+    // if (isChecked.every(term => term === false))
+    let searchPayload = {
       location: location,
       terms: optionSelected
     }
-    props.newSearch(submissionPost);
+    newSearch(searchPayload);
   }
 
   // const checklist = terms.map((term, index) => {
@@ -68,15 +70,10 @@ const TripSearchContainer = (props) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="search">
-          <div className="search-bar" id="search-bar-effect">
-            <span id="mag-img">
-              <svg className="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                </path>
-              </svg>
-            </span>
-            <input id="search-container-input" type='text' autoFocus="on" name='location' placeholder="Boston" value={location} onChange={(e)=>setLocation(e.target.value)} />
-          </div>
+          <SearchBar 
+            location={location}
+            setLocation={setLocation}
+          />
 
           {/* <div className="checklist-container">
             {checklist}

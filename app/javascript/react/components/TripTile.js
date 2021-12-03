@@ -2,21 +2,25 @@ import React from "react";
 import history from "./history";
 
 const TripTile = (props) => {
-  const pointDescription = props.trip.map((point) => {
+  const pointDescription = props.trip.points.map((point) => {
     const categories = point.categories.map((category) => {
       return category.title;
     });
     
     return (
-      <li key={point.id}>
-        Name: {point.name} | Categories: {categories.join(", ")} | Rating: {point.rating} | Reviews: {point.review_count} | Address: {point.location.address1}
+      <li key={point.yelp_id}>
+        <p className="point-name">{point.name}</p>
+        <p className="point-rating">{point.rating} ⭐️ ({point.review_count})</p>
+        <p className="point-categories">Categories: {categories.join(", ")}</p>
       </li>
     )
   });
   
   const handleClick = () => {
-    history.push(`/trips/${props.id}`, { trips: props.trips });
+    history.push(`/trips/${props.trip.trip_id}`, { trips: props.trips });
   }
+
+  const points = props.trip.points;
 
   return (
     <div className="trip-tile" onClick={handleClick}>
