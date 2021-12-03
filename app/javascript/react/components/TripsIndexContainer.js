@@ -35,9 +35,17 @@ const TripsIndexContainer = (props) => {
         setTrips(responseBody.trips);
         setLoading(false);
         // history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
-        history.push({pathname: "/trips", search: `q=${searchPayload.location}&terms=${searchPayload.terms.forEach(term => term.value)}`}, { trips: responseBody.trips });
-        console.log(history.location);
-        debugger;
+        history.push({
+          pathname: "/trips", 
+          search: `q=${searchPayload.location}
+                  &terms=${searchPayload.terms.forEach(
+                    term => term.value
+                  )}`
+          }, 
+          { 
+            trips: responseBody.trips 
+          }
+        );
       }
     } catch (e) {
       setError("Something went wrong");
