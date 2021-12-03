@@ -1,4 +1,4 @@
-# triply
+# triply📍
 
 triply is an app created to provide users with unique, walkable itineraries. Users can search a city and their desired points of interest, and triply does the rest!
 
