@@ -10,10 +10,17 @@ Check out the app here:
 
 ## Set Up and Usage
 1. install gems and packages 
+   
    `bundle && yarn`
+
 2. set up a POSTGRES database
+   
    `rails db:create db:migrate`
+
 3. start up the server
+   
    `rails `
+   
    `yarn dev:client`
+
 4. navigate to [http://localhost:3000](http://localhost:3000) in your browser
