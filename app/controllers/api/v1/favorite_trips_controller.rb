@@ -8,7 +8,6 @@ class Api::V1::FavoriteTripsController < ApplicationController
       render json: { message: "Successfully unfavorited" }
     else
       trip = Trip.new(trip_params)
-      
       points_params[:points].each do |point|
         if Place.find_by(yelp_id: point[:yelp_id])
           trip.places << Place.find_by(yelp_id: point[:yelp_id])

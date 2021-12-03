@@ -2,3 +2,18 @@
 <div><%= @user.email %></div>
 <div><%= @user.username %></div>
 <div><%= link_to "Edit Account Information", edit_user_registration_path %></div>
+
+<div class="favorites-div-parent">
+  <% @favorites.each do |favorite| %>
+    <form method="post" action="/api/v1/trips/#{favorite.trip_id}/favorite_trips">
+      <input type="submit" value="Favorite" />
+    </form>
+    <% favorite.places.each do |place| %>
+      <div class="favorite-trip">
+
+        <%= place.name %>
+
+      </div>
+    <% end %>
+  <% end %>
+</div>

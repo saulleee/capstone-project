@@ -27,15 +27,17 @@ const TripShowContainer = (props) => {
   return (
     <>
       <div className="pop-up-messages">
-        {error}
-        {favorited}
+        <span className="pop-up-text">{error}</span>
+        <span className="pop-up-text">{favorited}</span>
       </div>
+
       <div className="show-container-parent">
         <Favorite 
           trip={trip} 
           handleFavoritedState={handleFavoritedState}
           setError={setError}
         />
+
         {pointDescription}
       </div>
     </>
