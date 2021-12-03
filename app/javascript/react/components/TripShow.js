@@ -14,7 +14,7 @@ const TripShow = (props) => {
       <div className="show-description">
         <ul>
           <li>
-            <a href={point.url} target="_blank">{point.name}</a>
+            <a href={point.url} target="_blank" className="point-name-show">{point.name}</a>
           </li>
           <li>
             Categories: {categories.join(", ")}
