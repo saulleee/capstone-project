@@ -5,7 +5,7 @@
 
 <div class="favorites-div-parent">
   <% @favorites.each do |favorite| %>
-    <form method="post" action="/api/v1/trips/#{favorite.trip_id}/favorite_trips">
+    <form method="post" action="/api/v1/trips/#{@favorite.trip_id}/favorite_trips">
       <input type="submit" value="Favorite" />
     </form>
     <% favorite.places.each do |place| %>
