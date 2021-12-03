@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import TripShow from "./TripShow";
 import Favorite from "./Favorite";
 
 const TripShowContainer = (props) => {
-  
+  const [favorited, setFavorited] = useState('');
+  const [error, setError] = useState('');
+
   const tripId = props.match.params.id;
   const trips = props.location.state.trips;
-  
   const trip = trips.find(t => t.trip.trip_id == tripId);
   const points = trip.trip.points;
+
+  const handleFavoritedState = (favorited_trip) => {
+    setFavorited(favorited_trip);
+  }
 
   const pointDescription = points.map((point) => {
     return (
@@ -20,10 +25,22 @@ const TripShowContainer = (props) => {
   });
   
   return (
-    <div>
-      <Favorite trip={trip} />
-      {pointDescription}
-    </div>
+    <>
+      <div className="pop-up-messages">
+        <span className="pop-up-text">{error}</span>
+        <span className="pop-up-text">{favorited}</span>
+      </div>
+
+      <div className="show-container-parent">
+        <Favorite 
+          trip={trip} 
+          handleFavoritedState={handleFavoritedState}
+          setError={setError}
+        />
+
+        {pointDescription}
+      </div>
+    </>
   );
 }
 

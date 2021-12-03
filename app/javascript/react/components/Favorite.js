@@ -2,8 +2,7 @@ import React from "react";
 
 const Favorite = (props) => {
   const trip = props.trip;
-  // const error = props.error;
-  // const setError = props.setError;
+  const setError = props.setError;
 
   const newFavorite = async (trip) => {
     try {
@@ -20,9 +19,9 @@ const Favorite = (props) => {
         throw new Error(errorMessage);
       }
       const responseBody = await response.json();
-      // props.handleFavoritedState(responseBody.message);
+      props.handleFavoritedState(responseBody.message);
     } catch (e) {
-      // setError([...error, "Please log in"]);
+      setError("Please log in");
       console.error(`Error in Fetch: ${e.message}`);
     }
   }
@@ -35,7 +34,7 @@ const Favorite = (props) => {
   return (
     <div className="favorite-parent-div">
       <form onSubmit={onSubmitHandler}>
-        <input type='submit' className="favorite-button" value="🥰 " />Favorite
+        <input type='submit' className="favorite-button" value="🥰 " /> Favorite
       </form>
     </div>
   );

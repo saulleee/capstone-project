@@ -25,15 +25,15 @@ ActiveRecord::Schema.define(version: 2021_11_27_184649) do
   end
 
   create_table "places", force: :cascade do |t|
-    t.jsonb "categories", null: false
     t.string "yelp_id", null: false
-    t.string "image_url", null: false
-    t.jsonb "location", null: false
-    t.string "name", null: false
-    t.string "price", null: false
-    t.integer "rating", null: false
-    t.integer "review_count", null: false
-    t.string "url", null: false
+    t.jsonb "categories"
+    t.string "image_url"
+    t.jsonb "location"
+    t.string "name"
+    t.string "price"
+    t.integer "rating"
+    t.integer "review_count"
+    t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

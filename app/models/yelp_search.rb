@@ -27,6 +27,14 @@ class YelpSearch
   def self.retrieve_results(paramsTerms, paramsLocation)
     terms = terms(paramsTerms)
 
+    if paramsLocation.strip.empty?
+      return YelpSearch.new(nil, "Please enter in a location 📍")
+    end
+
+    if paramsTerms.all? { |i| !i }
+      return YelpSearch.new(nil, "Please enter in desired points of interest")
+    end
+
     # first set of results
     initial_response = yelp_request(terms[0], paramsLocation, limit: INITIAL_RESPONSE_LIMIT)
     initial_parsed_response = parse_request(initial_response)
@@ -218,16 +226,9 @@ class YelpSearch
     ]
     terms = []
 
-    if !bools.any?(true)
-      terms = [
-        "cafe",
-        "attractions"
-      ]
-    else 
-      bools.each_with_index do |bool, index|
-        if bool === true
-          terms << preset_list[index]
-        end
+    bools.each_with_index do |bool, index|
+      if bool === true
+        terms << preset_list[index]
       end
     end
 
