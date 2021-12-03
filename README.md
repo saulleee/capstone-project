@@ -19,8 +19,8 @@ Check out the app here:
 
 3. start up the server
    
-   `rails `
-   
+   `rails s`
+
    `yarn dev:client`
 
 4. navigate to [http://localhost:3000](http://localhost:3000) in your browser
