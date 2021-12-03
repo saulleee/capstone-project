@@ -29,7 +29,7 @@ class YelpSearch
       return YelpSearch.new(nil, "Please enter in a location 📍")
     end
 
-    if paramsTerms.all? { |i| !i }
+    if terms.nil?
       return YelpSearch.new(nil, "Please enter in desired points of interest")
     end
 
@@ -213,8 +213,12 @@ class YelpSearch
   def self.terms(paramsTerms)
     terms = []
 
-    paramsTerms.each do |term|
-      terms << term["value"]
+    if !paramsTerms.nil?
+      paramsTerms.each do |term|
+        terms << term["value"]
+      end
+    else
+      terms = nil
     end
 
     return terms
