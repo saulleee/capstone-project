@@ -7,8 +7,8 @@ import { components } from "react-select";
 
 const TripSearchContainer = (props) => {
   const [location, setLocation] = useState(props.searchQuery.replace("?q=", '').replace("%20", ' '));
-  const [optionSelected, setOptionSelected] = useState(null);
-
+  const [optionSelected, setOptionSelected] = useState(history?.state?.state?.terms);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     let searchPayload = {
