@@ -21,7 +21,7 @@ class Api::V1::FavoriteTripsController < ApplicationController
       
       if trip.save
         current_user.trips << trip
-        render json: { message: "Sucessfully favorited" }
+        render json: { message: "Successfully favorited" }
       else
         render json: { message: "Something went wrong" }
       end
