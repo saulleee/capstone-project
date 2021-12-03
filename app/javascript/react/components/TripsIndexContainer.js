@@ -34,7 +34,7 @@ const TripsIndexContainer = (props) => {
       } else {
         setTrips(responseBody.trips);
         setLoading(false);
-        history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
+        // history.push({pathname: "/trips", search: `q=${searchPayload.location}`}, { trips: responseBody.trips });
         // history.push({pathname: "/trips", search: `q=${searchPayload.location}&terms=${searchPayload.terms.each(term => term.value)}`}, { trips: responseBody.trips });
         // Uncaught TypeError: searchPayload.terms.each is not a function at eval      setLoading(false);
       }
