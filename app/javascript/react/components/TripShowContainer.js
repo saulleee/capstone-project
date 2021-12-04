@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TripShow from "./TripShow";
 import Favorite from "./Favorite";
+import MapsContainer from "./MapsContainer";
 
 const TripShowContainer = (props) => {
   const [favorited, setFavorited] = useState('');
@@ -40,6 +41,9 @@ const TripShowContainer = (props) => {
 
         {pointDescription}
       </div>
+      <MapsContainer 
+        points={points}
+      />
     </>
   );
 }
