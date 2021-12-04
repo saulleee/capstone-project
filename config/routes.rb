@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get "/trips/:id", to: "homes#index"
   get "/about", to: "about#index"
 
+  resources :favorite_trips, only: [:destroy]
+
   namespace :api do
     namespace :v1 do
       post "yelp/search", to: "yelp#search"
