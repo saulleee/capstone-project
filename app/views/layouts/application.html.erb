@@ -35,10 +35,6 @@
 
   <hr class="solid">
 
-  <div class="empty-space-top">
-    &nbsp;
-  </div>
-
   <body>
     <%- flash.each do |key, value| -%>
       <div class="flash flash-<%= key %>">
@@ -46,7 +42,9 @@
       </div>
     <%- end -%>
 
-    <%= yield %>
+    <div class="main-content">
+      <%= yield %>
+    </div>
 
     <%= javascript_include_tag 'application' %>
     
@@ -59,10 +57,10 @@
     <%= javascript_pack_tag 'application' %>
   </body>
   
-  <div class="empty-space-bottom">
-    &nbsp;
+  <div class="wrapper">
+    <div class="push">
+    </div>
   </div>
-
   <div id="footer" class="footer">
     <a href='/about'>About</a>
   </div>

@@ -1,0 +1,32 @@
+.about-page-container {
+ display: grid;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
+}
+
+.about-page-container h1 {
+  font-size: 45px;
+  margin-top: 75px;
+  margin-bottom: 35px;
+}
+
+.about-page-container p {
+  padding: 15px 370px;
+}
+
+.about-page-container a {
+  padding: 10px;
+  margin: auto;
+}
+
+.profile-pic-about {
+  border-radius: 50%;
+  height: 250px;
+  width: 250px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  margin-top: -50px;
+}

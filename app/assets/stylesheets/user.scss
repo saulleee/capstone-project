@@ -5,13 +5,53 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 25px 0px 0px 0px;
-  border: 1px solid #dfe1e5;
-  border-radius: 24px 24px 24px 24px;
+  padding: 150px 0px 0px 0px;
+}
+
+.log-in-header p {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.field {
+  padding: 10px;
+}
+
+.field label {
+  font-weight: bold;
+}
+
+.field input {
+  width: 300px;
+  height: 34px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.actions input {
+  border-width: 0px;
+  height: 36px;
+  padding: 0px 20px 0px 20px;
+  margin: 0px 0px 25px 0px;
+  border-radius: 6px;
+  border: 1px solid #efefef;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.actions input:hover {
+  background-color: rgb(220, 0, 0);
 }
 
 .log-in-page input {
   height: 34px;
+  width: 300px;
   outline: none;
 }
 
@@ -23,6 +63,27 @@
   text-decoration: underline;
 }
 
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+/* sign up */
+
+.sign-up-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 150px 0px 0px 0px;
+}
+
+.sign-up-page h2 {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
 /* show */
 
 .user-show-page {
@@ -31,11 +92,14 @@
   align-items: center;
 }
 
+.user-show-page h1 {
+  font-size: 25px;
+}
+
 .user-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid black;
   margin: 50px;
   padding: 30px;
   border-radius: 25px;
@@ -48,17 +112,19 @@
 
 .userprofilepic img {
   border-radius: 50%;
+  margin-bottom: 25px;
 }
 
 .favorites-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid black;
   margin: 10px;
   padding: 20px;
   border-radius: 25px;
   width: 500px;
 }
 
-/* edit account */
+.userinfo-container {
+  padding: 5px;
+}

@@ -1,13 +1,13 @@
 <div class="user-show-page">
   <div class="user-container">
-    <h1 class="user-container-title">Account Information</h1>
+    <h1>Account Information</h1>
     <div class="userprofilepic">
       <%= image_tag("#{@user.profile_photo.default}") %>
     </div>
-    <div class="useremail-container">
+    <div class="userinfo-container">
       <%= @user.email %>
     </div>
-    <div class="username-container">
+    <div class="userinfo-container">
       <%= @user.username %>
     </div>
     <div class="edit-account-link-container">
