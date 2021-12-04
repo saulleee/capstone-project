@@ -18,10 +18,7 @@
   <div class="favorites-container">
     <h1>Favorite Trips</h1>
     <% @favorites.each do |favorite| %>
-
-      <form method="post" action="/trips/#{favorite.trip_id}">
-        <input type="submit" value="Favorite" />
-      </form>
+      <%= link_to "Remove Favorite", favorite_trip_path(id: current_user.id, trip_id: favorite.trip_id), method: :delete %>
 
       <% favorite.places.each do |place| %>
         <div class="favorite-trip">
