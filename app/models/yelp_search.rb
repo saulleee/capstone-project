@@ -30,7 +30,7 @@ class YelpSearch
     end
 
     if terms.nil?
-      return YelpSearch.new(nil, "Please enter in desired points of interest")
+      return YelpSearch.new(nil, "Please enter in points of interest ✅")
     end
 
     # first set of results
