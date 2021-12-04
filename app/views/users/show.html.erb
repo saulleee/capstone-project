@@ -1,19 +1,33 @@
-<div><%= image_tag("#{@user.profile_photo.default}") %></div>
-<div><%= @user.email %></div>
-<div><%= @user.username %></div>
-<div><%= link_to "Edit Account Information", edit_user_registration_path %></div>
+<div class="user-show-page">
+  <div class="user-container">
+    <h1 class="user-container-title">Account Information</h1>
+    <div class="userprofilepic">
+      <%= image_tag("#{@user.profile_photo.default}") %>
+    </div>
+    <div class="useremail-container">
+      <%= @user.email %>
+    </div>
+    <div class="username-container">
+      <%= @user.username %>
+    </div>
+    <div class="edit-account-link-container">
+      <%= link_to "Edit Account Information", edit_user_registration_path %>
+    </div>
+  </div>
 
-<div class="favorites-div-parent">
-  <% @favorites.each do |favorite| %>
-    <form method="post" action="/api/v1/trips/#{@favorite.trip_id}/favorite_trips">
-      <input type="submit" value="Favorite" />
-    </form>
-    <% favorite.places.each do |place| %>
-      <div class="favorite-trip">
+  <div class="favorites-container">
+    <h1>Favorite Trips</h1>
+    <% @favorites.each do |favorite| %>
+      <%= link_to "Remove Favorite", favorite_trip_path(id: current_user.id, trip_id: favorite.trip_id), method: :delete %>
 
-        <%= place.name %>
+      <% favorite.places.each do |place| %>
+        <div class="favorite-trip">
 
-      </div>
+          <%= place.name %>
+
+        </div>
+      <% end %>
+
     <% end %>
-  <% end %>
+  </div>
 </div>
