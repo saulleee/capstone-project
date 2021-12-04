@@ -2,12 +2,14 @@
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 16px;
   color: #4a4c4e;
+  margin: 0;
+  padding: 0;
 }
 
-.empty-space-top {
-  height: 100px;
+html, body {
+  height: 100%;
 }
 
-.empty-space-bottom {
-  height: 100px;
+.main-content {
+  min-height: calc(100vh - 100px);
 }
