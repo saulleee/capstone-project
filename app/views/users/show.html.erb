@@ -2,7 +2,7 @@
   <div class="user-container">
     <h1>Account Information</h1>
     <div class="userprofilepic">
-      <%= image_tag("#{@user.profile_photo.default}") %>
+      <%= image_tag("#{@user.profile_photo.default}", class:"userprofilepic-img") %>
     </div>
     <div class="userinfo-container">
       <%= @user.email %>

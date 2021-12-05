@@ -17,7 +17,9 @@
     </div>
     <% if signed_in? %>
       <div class="dropdown">
-        <%= image_tag(current_user.profile_photo.thumb.url, id: "profile-pic-nav-bar") %>
+        <div class="profile-pic-nav-bar">
+          <%= image_tag(current_user.profile_photo.thumb.url) %>
+        </div>
         <div class="dropdown-content">
           <%= link_to "My Account", user_path(current_user.id) %>
           <%= link_to "Settings", edit_user_registration_path %>

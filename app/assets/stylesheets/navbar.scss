@@ -32,9 +32,20 @@
 
 /* navbar styling (upper right) */
 
-#profile-pic-nav-bar {
-  border-radius: 50%; 
+.profile-pic-nav-bar {
+  width: 55px;
+  height: 55px;
+  position: relative;
+  overflow: hidden;
   margin-right: 25px;
+  border-radius: 50%;
+}  
+
+.profile-pic-nav-bar img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
 }  
 
 .sign-in-div {
