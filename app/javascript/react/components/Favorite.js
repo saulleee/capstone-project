@@ -34,7 +34,7 @@ const Favorite = (props) => {
   return (
     <div className="favorite-parent-div">
       <form onSubmit={onSubmitHandler}>
-        <input type='submit' className="favorite-button" value="🥰 " /> Favorite
+        <input type='submit' className="favorite-button" value="Favorite This Trip" />
       </form>
     </div>
   );

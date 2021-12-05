@@ -1,17 +1,50 @@
+.show-and-map-container {
+  display: flex;
+  height: calc(100vh);
+  width: calc(100vh);
+}
+
 /* show container */
 
 .show-container-parent{
   display: grid;
-  margin: 50px 25px;
-  padding: 35px;
-  border: solid 1px black;
-  border-radius: 25px;
+  width: 750px;
+  flex: 0 0 750px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.75);
+  clip-path: inset(0px -15px 0px 0px);
+}
+
+.show-container-div {
+ padding: 50px;
 }
 
 /* individual show tiles */
 
+.favorite-parent-div {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.favorite-button {
+  border-width: 0px;
+  width: auto;
+  height: 36px;
+  padding: 0px 20px 0px 20px;
+  margin: 0px 0px 5px 0px;
+  border-radius: 6px;
+  border: 1px solid #efefef;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.favorite-button:hover {
+  background-color: rgb(220, 0, 0);
+}
+
 .show-parent-div {
   display: flex;
+  background-color: white;
 }
 
 .show-yelp-img {
@@ -21,18 +54,45 @@
 
 .show-yelp-img img {
   object-fit: cover;
-  width: 250px;
-  height: 250px;
-  border-radius: 25px;
+  width: 225px;
+  height: 225px;
+  border-radius: 15px;
   flex: 0 0 25em;
+}
+
+.show-description {
+  padding-top: 25px;
+}
+
+.show-description p {
+  padding: 7px 5px;
 }
 
 .point-name-show {
   font-weight: bold;
   font-size: 16pt;
+  margin-bottom: 25px;
 }
 
-/* favorite */
-.favorite-parent-div {
-  margin-bottom: 20px;
+.point-name-show {
+  text-decoration: none;
+}
+
+.point-name-show:hover {
+  text-decoration: underline;
+}
+
+/* map */
+
+.maps {
+
+}
+
+.maps iframe {
+  border: none;
+  top: 0;
+  left: 750px;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1;
 }

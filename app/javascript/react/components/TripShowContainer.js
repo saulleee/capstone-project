@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TripShow from "./TripShow";
 import Favorite from "./Favorite";
+import MapsContainer from "./MapsContainer";
 
 const TripShowContainer = (props) => {
   const [favorited, setFavorited] = useState('');
@@ -31,14 +32,23 @@ const TripShowContainer = (props) => {
         <span className="pop-up-text">{favorited}</span>
       </div>
 
-      <div className="show-container-parent">
-        <Favorite 
-          trip={trip} 
-          handleFavoritedState={handleFavoritedState}
-          setError={setError}
-        />
+      <div className="show-and-map-container">
+        <div className="show-container-parent">
+          <div className="show-container-div">
+            <Favorite 
+              trip={trip} 
+              handleFavoritedState={handleFavoritedState}
+              setError={setError}
+            />
 
-        {pointDescription}
+            {pointDescription}
+          </div>
+        </div>
+        <div className="maps">
+          <MapsContainer 
+            points={points}
+          />
+        </div>
       </div>
     </>
   );
