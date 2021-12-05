@@ -115,7 +115,7 @@
   margin-bottom: 25px;
 }
 
-.favorites-container {
+.favorites-container-parent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -123,6 +123,15 @@
   padding: 20px;
   border-radius: 25px;
   width: 500px;
+}
+
+.favorites-container {
+  padding: 10px;
+  text-align: center;
+}
+
+.favorites-trip {
+  padding-top: 5px;
 }
 
 .userinfo-container {

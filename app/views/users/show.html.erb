@@ -15,19 +15,20 @@
     </div>
   </div>
 
-  <div class="favorites-container">
+  <div class="favorites-container-parent">
     <h1>Favorite Trips</h1>
     <% @favorites.each do |favorite| %>
-      <%= link_to "Remove Favorite", favorite_trip_path(id: current_user.id, trip_id: favorite.trip_id), method: :delete %>
+      <div class="favorites-container">
+        <%= link_to "Remove Favorite", favorite_trip_path(id: current_user.id, trip_id: favorite.trip_id), method: :delete %>
 
-      <% favorite.places.each do |place| %>
-        <div class="favorite-trip">
+        <% favorite.places.each do |place| %>
+          <div class="favorite-trip">
+  
+            <%= place.name %>
 
-          <%= place.name %>
-
-        </div>
-      <% end %>
-
+          </div>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
