@@ -21,7 +21,7 @@ const Favorite = (props) => {
       const responseBody = await response.json();
       props.handleFavoritedState(responseBody.message);
     } catch (e) {
-      setError("Please log in");
+      window.location.href = "/users/sign_in";
       console.error(`Error in Fetch: ${e.message}`);
     }
   }

@@ -28,7 +28,7 @@
 .favorite-button {
   border-width: 0px;
   width: auto;
-  height: 36px;
+  height: 44px;
   padding: 0px 20px 0px 20px;
   margin: 0px 0px 5px 0px;
   border-radius: 6px;
@@ -45,6 +45,9 @@
 .show-parent-div {
   display: flex;
   background-color: white;
+  border: solid #cccccc 1px;
+  border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .show-yelp-img {
@@ -68,18 +71,26 @@
   padding: 7px 5px;
 }
 
-.point-name-show {
+.bold {
   font-weight: bold;
-  font-size: 16pt;
-  margin-bottom: 25px;
 }
 
 .point-name-show {
+  border-width: 0px;
+  width: auto;
+  height: 36px;
+  padding: 10px 20px;
+  margin-right: 25px;
+  border-radius: 6px;
+  border: 1px solid #efefef;
+  background-color: red;
+  color: white;
+  font-weight: bold;
   text-decoration: none;
 }
 
 .point-name-show:hover {
-  text-decoration: underline;
+  background-color: rgb(220, 0, 0);
 }
 
 /* map */

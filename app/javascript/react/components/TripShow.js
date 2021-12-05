@@ -16,13 +16,13 @@ const TripShow = (props) => {
           <a href={point.url} target="_blank" className="point-name-show">{point.name}</a>
         </p>
         <p>
+        <p  className="bold">
           {point.rating} ⭐️ ({point.review_count})
         </p>
-        <p>
-          Categories: {categories.join(", ")}
+          <span className="bold">Categories:</span> {categories.join(", ")}
         </p>
         <p>
-          Address: {point.location.address1}, {point.location.city}, {point.location.state} {point.location.zip_code}
+          <span className="bold">Address:</span> {point.location.address1}, {point.location.city}, {point.location.state} {point.location.zip_code}
         </p>
       </div>
     </div>
