@@ -69,17 +69,23 @@
 }
 
 .point-name-show {
+  border-width: 0px;
+  width: auto;
+  height: 36px;
+  padding: 10px 20px;
+  margin-right: 25px;
+  border-radius: 6px;
+  border: 1px solid #efefef;
+  background-color: red;
+  color: white;
   font-weight: bold;
-  font-size: 16pt;
-  margin-bottom: 25px;
-}
-
-.point-name-show {
   text-decoration: none;
 }
 
+
+
 .point-name-show:hover {
-  text-decoration: underline;
+  background-color: rgb(220, 0, 0);
 }
 
 /* map */
