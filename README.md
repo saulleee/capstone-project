@@ -8,6 +8,10 @@ Check out the app here:
 
 [https://triplyapp.herokuapp.com/](https://triplyapp.herokuapp.com/)
 
+## Homepage
+
+<img width="896" alt="triply-home" src="https://user-images.githubusercontent.com/26151666/144734666-01f473a7-6c5a-44a5-bb27-69b3309cfd8d.png">
+
 ## Set Up and Usage
 1. install gems and packages 
    
