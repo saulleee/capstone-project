@@ -8,7 +8,7 @@ const TripTile = (props) => {
     });
     
     return (
-      <li key={point.yelp_id}>
+      <li key={point.yelp_id} className="point-descriptions">
         <p className="point-name-tile">{point.name}</p>
         <p className="point-rating-tile">{point.rating} ⭐️ ({point.review_count})</p>
         <p className="point-categories-tile">Categories: {categories.join(", ")}</p>

@@ -21,12 +21,15 @@
 
 .trip-tile {
   margin: 15px 50px;
-  padding: 15px 25px;
+  padding: 25px 55px;
   border: 1px solid #dfe1e5;
-  border-radius: 24px;
-
-  display: flex;
+  border-radius: 15px;
+  display: grid;
   width: 625px;
+}
+
+.point-descriptions {
+  padding: 10px 0px;
 }
 
 .trip-tile:hover {
