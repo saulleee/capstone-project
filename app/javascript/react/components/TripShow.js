@@ -12,13 +12,13 @@ const TripShow = (props) => {
         <img src={point.image_url} alt="Image from Yelp" />
       </div>
       <div className="show-description">
-        <p>
+        <p className="show-description-name">
           <a href={point.url} target="_blank" className="point-name-show">{point.name}</a>
         </p>
-        <p>
         <p  className="bold">
           {point.rating} ⭐️ ({point.review_count})
         </p>
+        <p>
           <span className="bold">Categories:</span> {categories.join(", ")}
         </p>
         <p>

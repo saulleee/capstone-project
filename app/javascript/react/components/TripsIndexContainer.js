@@ -3,6 +3,7 @@ import TripSearchContainer from "./TripSearchContainer";
 import TripTile from "./TripTile";
 import history from "./history";
 import { useLocation } from "react-router-dom";
+import MapsHomeContainer from "./MapsHomeContainer";
 
 const TripsIndexContainer = () => {
   const [trips, setTrips] = useState([]);
@@ -59,9 +60,13 @@ const TripsIndexContainer = () => {
       />
     );
   });
-
+  
   return (
-    <div>
+    <>
+      <MapsHomeContainer
+        location={search.replace("?q=", '')}
+      />
+      
       <div className="trips-index-container-parent">
         <div className="trip-search-container">
           <TripSearchContainer 
@@ -78,8 +83,7 @@ const TripsIndexContainer = () => {
           { loading ? <i className="fas fa-spinner fa-spin" id="search-spinner"></i> : tripTiles }
         </div>
       </div>
-
-    </div>
+    </>
   );
 }
 

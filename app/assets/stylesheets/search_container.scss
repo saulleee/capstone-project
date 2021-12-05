@@ -17,8 +17,9 @@
   width: 633px;
   height: 36px;
   border: 1px solid #cccccc;
-  border-radius: 6px;
+  border-radius: 4px;
   margin: 0px 0px 25px 0px;
+  background-color: white;
 }
 
 #bar-icon {
@@ -30,18 +31,18 @@
 #search-container-input {
   border: none;
   border-color: transparent;
-  width: 575px;
+  width: 610px;
   height: 34px;
   outline: none;
 }
 
 ::placeholder {
-  color: rgba(0, 0, 0, 0.50);
+  color: #808080;
   opacity: 1;
 }
 
 #search-bar-effect:hover {
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-color: #b3b3b3;
 }
 
 input:-webkit-autofill,
