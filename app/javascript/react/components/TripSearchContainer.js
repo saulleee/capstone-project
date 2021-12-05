@@ -3,7 +3,7 @@ import { terms } from "./utilities/terms";
 import SearchBar from "./SearchBar";
 import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
-// import { customStyles } from "./utilities/customStyles";
+import { customStyles } from "./utilities/customStyles";
 
 const TripSearchContainer = (props) => {
   const [location, setLocation] = useState(props.searchQuery.replace("?q=", '').replace(/%20/g, ' '));
@@ -58,8 +58,8 @@ const TripSearchContainer = (props) => {
               onChange={handleChange}
               allowSelectAll={true}
               value={optionSelected}
-              placeholder={"points of interest"}
-              // styles={customStyles}
+              placeholder={"what do you want to do?"}
+              styles={customStyles}
             />
           </div>
 

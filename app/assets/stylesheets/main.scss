@@ -6,10 +6,15 @@
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-}
+// html, body {
+//   height: 100%;
+// }
 
 .main-content {
-  min-height: calc(100vh - 100px);
+  // min-height: calc(100vh - 100px);
+
+  position: relative;
+
+  min-width: 100vw;
+  min-height: 100vh;
 }

@@ -29,7 +29,7 @@ class YelpSearch
       return YelpSearch.new(nil, "Please enter in a location 📍")
     end
 
-    if terms.nil?
+    if terms.nil? || terms.empty?
       return YelpSearch.new(nil, "Please enter in points of interest ✅")
     end
 
