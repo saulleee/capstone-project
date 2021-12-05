@@ -70,14 +70,15 @@ const TripsIndexContainer = () => {
           />
         </div>
         
+        <div className="pop-up-messages">
+          <span className="pop-up-text">{error}</span>
+        </div>
+
         <div className="trip-search-results">
           { loading ? <i className="fas fa-spinner fa-spin" id="search-spinner"></i> : tripTiles }
         </div>
       </div>
 
-      <div className="pop-up-messages">
-        <span className="pop-up-text">{error}</span>
-      </div>
     </div>
   );
 }

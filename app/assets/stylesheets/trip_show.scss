@@ -1,7 +1,6 @@
 .show-and-map-container {
   display: flex;
-  height: calc(100vh);
-  width: calc(100vh);
+  width: calc(100vw);
 }
 
 /* show container */
@@ -15,7 +14,8 @@
 }
 
 .show-container-div {
- padding: 50px;
+ padding: 50px 50px 200px 50px;
+ min-height: calc(100vh);
 }
 
 /* individual show tiles */
@@ -85,7 +85,7 @@
 /* map */
 
 .maps {
-
+  width: calc(100vw - 750px);
 }
 
 .maps iframe {
