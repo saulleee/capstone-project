@@ -191,7 +191,7 @@ class YelpSearch
     updated_trips = trips.map do |trip|
       trip.each do |place|
         rename_key(place, "id", "yelp_id")
-        delete_key(place, "alias", "is_closed", "coordinates", "transactions", "phone", "display_phone", "distance")
+        delete_key(place, "alias", "is_closed", "transactions", "phone", "display_phone", "distance")
         place
       end
     end
