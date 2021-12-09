@@ -15,7 +15,7 @@ class YelpSearch
   SUB_RESPONSE_RADIUS = 1000
   SUB_RESPONSE_SORT_BY = ["review_count", "distance", "best_match", "rating"]
 
-  attr_reader :trips
+  attr_reader :trips, :error
 
   def initialize(trips, error)
     @trips = trips
