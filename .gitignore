@@ -29,5 +29,3 @@
 /node_modules
 yarn-debug.log*
 .yarn-integrity
-
-/models/yelp_search.rb
